@@ -1,7 +1,7 @@
 #' Vertically Merge Files in a Directory into a Single Large Dataset.
-#' 
+#'
 #' @description Vertically merge files in a directory into a single large dataset. Directory should contain
-#'    nothing but the files to be merged. Files in the directory should all be either in txt or csv format. 
+#'    nothing but the files to be merged. Files in the directory should all be either in txt or csv format.
 #' @param file_name A string with the name of the file of the large dataset the function returns.
 #' @param save_table Logical. If TRUE, saves the dataset into a file. Default is \code{TRUE}.
 #' @param notification Logical. If TRUE, prints messages about the progress of the function. Default is \code{TRUE}.
@@ -17,15 +17,15 @@ file_merge <- function(file_name = "dataset.txt", save_table = TRUE, notificatio
   #   A single large data set
   #
   # Error handling
-  # Get file_name extension 
+  # Get file_name extension
   extension <- substr(file_name, nchar(file_name) - 3, nchar(file_name))
   if (extension != ".txt") {
     stop("Oops! file_name must end with txt extension")
   }
-  
+
   # Make a list of all files in the directory
   file_list <- list.files()
-  
+
   # Message how many files were found
   if (notification == TRUE) {
     if (length(file_list) == 1) {
@@ -34,13 +34,13 @@ file_merge <- function(file_name = "dataset.txt", save_table = TRUE, notificatio
       message(paste("Found", length(file_list), "files"))
     }
   }
-  
+
   # Merge files vertically
   for (file in file_list) {
 
     # Get file extension
     extension <- substr(file, nchar(file) - 3, nchar(file))
-    
+
     # Create large dataset in case it does not exists
     if (!exists("dataset")) {
       if (extension == ".txt") {
@@ -49,7 +49,7 @@ file_merge <- function(file_name = "dataset.txt", save_table = TRUE, notificatio
         dataset <- read.csv(file, header = TRUE)
       }
     }
-    
+
     # Append current file to large dataset in case it already exists
     if (exists("dataset")){
       # Read current file into temp_dataset
@@ -64,7 +64,7 @@ file_merge <- function(file_name = "dataset.txt", save_table = TRUE, notificatio
       rm(temp_dataset)
     }
   }  # End of for loop
-  
+
   # Save table in case save_table is set to TRUE
   if (save_table == TRUE) {
     if (notification == TRUE) {
@@ -73,12 +73,12 @@ file_merge <- function(file_name = "dataset.txt", save_table = TRUE, notificatio
     }
     write.table(dataset, row.names = FALSE, file = file_name)
   }
-  
+
   if (notification == TRUE) {
     # Message
     message("file_merge() finished!")
   }
-  
+
   # Return
   return(dataset)
 }
