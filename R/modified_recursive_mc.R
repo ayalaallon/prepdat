@@ -1,4 +1,4 @@
-#' Modified-recursive Outlier Removal Procedure with Moving Criterion
+#' Modified-recursive Outlier Removal Procedure with Moving Criterion 
 #'
 #' @description Modified-recursive outlier removal procedure with moving criterion according to Van Selst & Jolicoeur (1994).
 #' @param exp_cell Numeric vector on which the outlier removal method takes place.
@@ -23,7 +23,6 @@ modified_recursive_mc <- function(exp_cell) {
     sample_size <- length(exp_cell)
 
     # The data needs to have more than 2 observations in order to function
-    
     if(sample_size <= 2){
       break
     }
