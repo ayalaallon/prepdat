@@ -1,4 +1,4 @@
-#' Hybrid-recursive Outlier Removal Procedure with Moving Criterion
+#' Hybrid-recursive Outlier Removal Procedure with Moving Criterion (DELETE)
 #'
 #' @description Hybrid-recursive outlier removal procedure with moving criterion according to Van Selst & Jolicoeur (1994).
 #' @param exp_cell Numeric vector on which the outlier removal method takes place.
