@@ -1,0 +1,8 @@
+.Rproj.user
+.Rhistory
+.RData
+inst/doc
+*.xls
+*.txt
+old
+n44
