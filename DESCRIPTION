@@ -1,5 +1,5 @@
 Package: prepdat
-Title: Merges Individual Long Format Data Files into a Single Wide Format Table According to Any 
+Title: Merges Individual Long Format Data Files into a Single Wide Format Table According to Any
   Combination of Between and Within Grouping Variables and Generates a Number of Measures for Further Analysis.
 Version: 0.0.0.9000
 Authors@R: c(
@@ -7,24 +7,36 @@ Authors@R: c(
     person("Roy", "Luria", role = "aut"),
     person("Jim", "Grange", role = "ctb"),
     person("Nachshon", "Meiran", role = "ccp"))
-Description: The goal of the package is to take the individual data files and prepare one table for statistical
-  analysis (e.g., analysis of variance ;ANOVA) that contains several possibilities for dependent variables. The
-  package includes a number of functions: file_merge(), read_data() and prep(). The file_merge() function
-  merges individual data files in long format in which each line is a single trial within the experiment to a single
-  large dataset. The read_data() function reads a file in a txt or csv format that contains a dataset in a long
-  format table and creates a data frame from it. The prep() function aggregates the single dataset
-  according to any combination of between and within grouping variables (i.e., between-subjects and within-subjects
-  independent variables, respectively) and generates a number of dependent measures for further analysis. Dependent
-  measures include among others means before and after rejecting all values above a criterion number of standard
-  deviations, means after rejecting values according to procedures described in Van Selst & Jolicoeur (1994) (suitable when measuring reaction-time),
-  standard deviations, number of values, number of rejected values, proportions of rejected values for each criterion,
-  means according to any percentiles (e.g., 0.05, 0.25, 0.75, 0.95) and harmonic mean. Most suitable when measuring
-  reaction-times and/or accuracy, or any other variable in an interval or ratio scale. 
+Description: This package prepares data collected in an experimental design for
+  statistical analysis (e.g., analysis of variance ;ANOVA) by takeing the
+  individual data files and preparing one table that contains several
+  possibilities for dependent variables. The package includes a number of
+  functions: file_merge(), read_data() and prep(). The file_merge() function
+  vertically merges individual data files in a long format in which each line
+  is a single trial within the experiment to a single dataset. The read_data()
+  function reads a file in a txt or csv format that contains a single dataset
+  in a long format table and creates a data frame from it. The prep() function
+  aggregates the single dataset according to any combination of between and
+  within grouping variables (i.e., between-subjects and within-subjects
+  independent variables, respectively), and returns a data frame with a number
+  of dependent measures for further analysis for each experimental cell
+  according to the combination of provided grouping variables. Dependent
+  measures for each experimental cell  include among others means before and
+  after rejecting all values above a criterion number of standard deviations,
+  number of rejected values according to criterion number of standard
+  deviations, proportions of rejected values for each criterion number of
+  standard deviations, number of values before rejection,  means after
+  rejecting values according to procedures described in Van Selst & Jolicoeur
+  (1994) (suitable when measuring reaction-times), standard deviations, medians,
+  means according to any percentiles (e.g., 0.05, 0.25, 0.75, 0.95) and harmonic
+  means. The data frame prep() returns can also be exported as a txt file to be
+  used for statistical analysis in other statistical programs.  This package is
+  most suitable when measuring reaction-times and/or accuracy, or any other
+  variable in an interval or ratio scale.
 Depends: R (>= 3.0.3)
 License: GPL-3
 LazyData: true
-Imports: psych (>= 1.5.4),
-    dplyr (>= 0.4.2),
+Imports: dplyr (>= 0.4.2),
     reshape2 (>= 1.4.1)
 Suggests: knitr,
     testthat
