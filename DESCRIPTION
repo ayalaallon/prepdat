@@ -33,10 +33,12 @@ Description: Prepares data collected in an experimental design for statistical
   reaction-times), standard deviations, medians, means according to any
   percentile (e.g., 0.05, 0.25, 0.75, 0.95) and harmonic means. The data frame
   prep() returns can also be exported as a txt file to be used for statistical
-  analysis in other statistical programs. 
+  analysis in other statistical programs.
 Depends: R (>= 3.0.3)
 License: GPL-3
 LazyData: true
+URL: http://github.com/ayalaallon/prepdat
+BugReports: http://github.com/ayalaallon/prepdat/issues
 Imports: dplyr (>= 0.4.2),
     reshape2 (>= 1.4.1),
     psych(>= 1.5.4)
