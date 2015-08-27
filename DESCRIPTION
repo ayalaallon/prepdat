@@ -2,7 +2,7 @@ Package: prepdat
 Title: Merges Individual Long Format Data Files into a Single Wide Format Table
   According to Any Combination of Between and Within Grouping Variables and
   Generates a Number of Measures for Further Analysis
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: c(
     person("Ayala S.", "Allon", email = "ayalaallon@gmail.com", role = c("aut", "cre")),
     person("Roy", "Luria", role = "aut"),
