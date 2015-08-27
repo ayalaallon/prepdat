@@ -1,21 +1,19 @@
-#' Vertically Merge Files in a Directory into a Single Large Dataset.
-#'
-#' @description Vertically merge files in a directory into a single large dataset. Directory should contain
-#'    nothing but the files to be merged. Files in the directory should all be either in txt or csv format.
-#' @param file_name A string with the name of the file of the large dataset the function returns.
-#' @param save_table Logical. If TRUE, saves the dataset into a file. Default is \code{TRUE}.
-#' @param notification Logical. If TRUE, prints messages about the progress of the function. Default is \code{TRUE}.
+#' Vertically Merge Files in a Directory into a Single Large Dataset
+#' 
+#' @description Vertically merge files in a directory into a single large
+#'    dataset. Directory should contain nothing but the files to be merged.
+#'    Files in the directory should all be either in txt or csv format.
+#' @param file_name A string with the name of the file of the large dataset the
+#'   function returns in case \code{save_table} is \code{TRUE}. Default is
+#'   \code{"dataset.txt"}. 
+#' @param save_table Logical. If TRUE, saves the dataset into a file. Default
+#'   is \code{TRUE}.
+#' @param notification Logical. If TRUE, prints messages about the progress of
+#'   the function. Default is \code{TRUE}.
 #' @return The merged dataset \code{dataset}.
-file_merge <- function(file_name = "dataset.txt", save_table = TRUE, notification = TRUE) {
-  # Merging a set of files in a directory into a single, large dataset.
-  # Args:
-  #   file_name: Name of the file of the large dataset. Must end with txt
-  #              extenstion. Default is "dataset.txt".
-  #   save_table: If TRUE, saves the dataset into a file. Default is TRUE.
-  #   notification: If TRUE, prints messages about progress of the function. Default is TRUE.
-  # Returns:
-  #   A single large data set
-  #
+file_merge <- function(file_name = "dataset.txt", save_table = TRUE,
+                       notification = TRUE) {
+
   # Error handling
   # Get file_name extension
   extension <- substr(file_name, nchar(file_name) - 3, nchar(file_name))

@@ -7,17 +7,26 @@
 hybrid_recursive_mc(exp_cell)
 }
 \arguments{
-\item{exp_cell}{Numeric vector on which the outlier removal method takes place.}
+\item{exp_cell}{Numeric vector on which the outlier removal method takes
+place. If experimental cell has 4 trials or less it will result in
+\code{NA}.}
 }
 \value{
-Mean of \code{exp_cell} after removing outliers.
+A vector with the mean of \code{exp_cell} after removing outliers,
+ percent of trials removed, and total number of trials in \code{exp_cell} before
+ outlier removal.
 }
 \description{
-Hybrid-recursive outlier removal procedure with moving criterion according to Van Selst & Jolicoeur (1994).
+Hybrid-recursive outlier removal procedure with moving
+  criterion according to Van Selst & Jolicoeur (1994).
 }
 \references{
-Grange, J.A. (2015). trimr: An implementation of common response time trimming methods. R Package Version 1.0.0. \url{http://cran.r-project.org/web/packages/trimr/}
+Grange, J.A. (2015). trimr: An implementation of common response
+  time trimming methods. R Package Version 1.0.0.
+  \url{http://cran.r-project.org/web/packages/trimr/}
 
-Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample size on outlier elimination. \emph{The quarterly journal of experimental psychology, 47}(3), 631-650.
+Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample
+size on outlier elimination. \emph{The quarterly journal of experimental
+psychology, 47}(3), 631-650.
 }
 

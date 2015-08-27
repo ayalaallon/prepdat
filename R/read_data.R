@@ -1,17 +1,11 @@
-#' Reads a File in a txt or csv Format that Contains a Table and Creates a Data Frame from it.
+#' Reads a File in a txt or csv Format that Contains a Table and Creates a Data
+#' Frame from it
 #' 
 #' @param file_name A string with the name of the file to be read into R.
-#' @param notification Logical. If TRUE, prints messages about the progress of the function. Default is TRUE.
+#' @param notification Logical. If TRUE, prints messages about the progress of
+#'   the function. Default is \code{TRUE}.
 #' @return A data frame of the table specified in \code{file_name}.
 read_data <- function(file_name, notification = TRUE) {
-  # Reads a file in a txt or csv format that contains a table and creates a data frame from it.
-  #
-  # Args: 
-  #   file_name: Name of the file to be read into R.
-  #   notification: If TRUE, prints messages about the progress of the function. Default is TRUE.
-  #
-  # Returns:
-  #   A data frame of the table in file_name    
   
   # Get file_name extension 
   extension <- substr(file_name, nchar(file_name) - 3, nchar(file_name))

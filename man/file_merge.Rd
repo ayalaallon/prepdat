@@ -2,23 +2,28 @@
 % Please edit documentation in R/file_merge.R
 \name{file_merge}
 \alias{file_merge}
-\title{Vertically Merge Files in a Directory into a Single Large Dataset.}
+\title{Vertically Merge Files in a Directory into a Single Large Dataset}
 \usage{
 file_merge(file_name = "dataset.txt", save_table = TRUE,
   notification = TRUE)
 }
 \arguments{
-\item{file_name}{A string with the name of the file of the large dataset the function returns.}
+\item{file_name}{A string with the name of the file of the large dataset the
+function returns in case \code{save_table} is \code{TRUE}. Default is
+\code{"dataset.txt"}.}
 
-\item{save_table}{Logical. If TRUE, saves the dataset into a file. Default is \code{TRUE}.}
+\item{save_table}{Logical. If TRUE, saves the dataset into a file. Default
+is \code{TRUE}.}
 
-\item{notification}{Logical. If TRUE, prints messages about the progress of the function. Default is \code{TRUE}.}
+\item{notification}{Logical. If TRUE, prints messages about the progress of
+the function. Default is \code{TRUE}.}
 }
 \value{
 The merged dataset \code{dataset}.
 }
 \description{
-Vertically merge files in a directory into a single large dataset. Directory should contain
-   nothing but the files to be merged. Files in the directory should all be either in txt or csv format.
+Vertically merge files in a directory into a single large
+   dataset. Directory should contain nothing but the files to be merged.
+   Files in the directory should all be either in txt or csv format.
 }
 

@@ -2,19 +2,22 @@
 % Please edit documentation in R/read_data.R
 \name{read_data}
 \alias{read_data}
-\title{Reads a File in a txt or csv Format that Contains a Table and Creates a Data Frame from it.}
+\title{Reads a File in a txt or csv Format that Contains a Table and Creates a Data
+Frame from it}
 \usage{
 read_data(file_name, notification = TRUE)
 }
 \arguments{
 \item{file_name}{A string with the name of the file to be read into R.}
 
-\item{notification}{Logical. If TRUE, prints messages about the progress of the function. Default is TRUE.}
+\item{notification}{Logical. If TRUE, prints messages about the progress of
+the function. Default is \code{TRUE}.}
 }
 \value{
 A data frame of the table specified in \code{file_name}.
 }
 \description{
-Reads a File in a txt or csv Format that Contains a Table and Creates a Data Frame from it.
+Reads a File in a txt or csv Format that Contains a Table and Creates a Data
+Frame from it
 }
 
