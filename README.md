@@ -70,21 +70,33 @@ head(stroopdata)
 # Perform prep
 finalized_data <- prep(
       dataset = stroopdata  # Name of the merged raw data table in case you already loaded it into R.
-      , file_name = NULL  # Name of the file that contains the raw data after merging the individual raw data files.
+      , file_name = NULL  # Name of the file that contains the raw data after merging the individual
+                          # raw data files.
       , id = "subject"  # Name of the column that contains the variable specifying the case identifier.
-      , within_vars = c("block", "target_type")  # Name of column or columns that contain independent within-subject variables.
-      , between_vars = c("order")  # Name of column or columns that contain independent between-subject variables.
-      , dvc = "rt"  # Name of the column that contains the continuous dependent variable (e.g., reaction-time). 
-      , dvd = "ac"  # Name of the column that contains the discrete dependent variable (e.g., 0 and 1 for accuracy measures).
+      , within_vars = c("block", "target_type")  # Name of column or columns that contain independent
+                                                 # within-subject variables.
+      , between_vars = c("order")  # Name of column or columns that contain independent between-subject
+                                   # variables.
+      , dvc = "rt"  # Name of the column that contains the continuous dependent variable (e.g.,
+                    # reaction-time). 
+      , dvd = "ac"  # Name of the column that contains the discrete dependent variable (e.g., 0
+                    # and 1 for accuracy measures).
       , keep_trials = NULL
       , drop_vars = c()
-      , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"  # Keep for dvc only trials that meet these conditions. 
-      , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"  # Keep for dvd only trials that meet these conditions.
+      , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"  # Keep for
+                                                                                       # dvc only
+                                                                                       # trials that
+                                                                                       # meet these
+                                                                                       # conditions. 
+      , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"  # Keep for dvd only trials that
+                                                                    # meet these conditions.
       , id_properties = c()
-      , sd_criterion = c(1, 1.5, 2)  # Criterions to reject all observations above standard deviations specified here and then calculate means.
+      , sd_criterion = c(1, 1.5, 2)  # Criterions to reject all observations above standard deviations
+                                     # specified here and then calculate means.
       , percentiles = c(0.05, 0.25, 0.75, 0.95)  # Percentiles of dvc (any percentile is possible).
       , outlier_removal = 2  # Perform modified recursive procedure with moving criterion.
-      , keep_trials_outlier = "raw_data$ac == 1"  # Keep for outlier removal procedure only trials that meet this condition.
+      , keep_trials_outlier = "raw_data$ac == 1"  # Keep for outlier removal procedure only trials
+                                                  # that meet this condition.
       , decimal_places = 4
       , notification = TRUE
       , dm = c()  # See ?prep for more details on this argument.
@@ -94,8 +106,10 @@ finalized_data <- prep(
    )
    
 # Look at finalized_data:
-# The hierarchical order for within_vars was first "block" (which has two levels- "1" and "2", and then "target_type"
-# (which also has two levels- "1" and "2"). This means that for each of the dependent measures we will get four columns. For # example mdvc1 is the mean for "block" 1 and "target_type" 2, mdvc2 is the mean for "block" 2 and "target_type" 1 etc.
+# The hierarchical order for within_vars was first "block" (which has two levels- "1" and "2", and then
+# "target_type" (which also has two levels- "1" and "2"). This means that for each of the dependent
+# measures we will get four columns. For example mdvc1 is the mean for "block" 1 and "target_type" 2,
+# mdvc2 is the mean for "block" 2 and "target_type" 1 etc.
 head(finalized_data)
     subject order    mdvc1     mdvc2     mdvc3     mdvc4    sdvc1    sdvc2    sdvc3
 5013    5013     2 863.1736 1038.4444 1081.0000 1103.1189 328.2833 214.1703 417.1448
