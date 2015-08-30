@@ -8,10 +8,7 @@ Selst & Jolicoeur (1994).
 ## Overview
 The two major functions you need to know in order to use *prepdat* are `file_merge()` and `prep()`.
 ### file_merge()
-The `file_merge()` function concatenates raw data files of individual participants (in which each line corresponds to a single
-trial in the experiment) to one raw data file that includes all participants. In order for the function to work, all raw data
-files you wish to merge should be put in one folder containing nothing but the raw data files. In addition, the working directory
-should be set to that folder. All raw data files should be in the same format (either txt or csv). 
+The `file_merge()` function concatenates raw data files of individual participants (in which each line corresponds to a single trial in the experiment) to one raw data file that includes all participants. In order for the function to work, all raw data files you wish to merge should be put in one folder containing nothing but the raw data files. In addition, the working directory should be set to that folder. All raw data files should be in the same format (either txt or csv). 
 ### prep()
 After you merged the raw data files using `file_merge()`, or any other function (for example using Eprime mergedat), you are ready
 to continue implementing *prepdat* by using the `prep()` function, which is the main function of *prepdat*.
@@ -21,19 +18,28 @@ statistical analysis. The finalized table contains for each participant the aver
 several possible dependent variables (e.g., reaction-time and accuracy) according to specified independent variables, which can be
 any combination of within-subject (a.k.a repeated measures) and between-subject independent variables. 
 The possibilities for dependent measures include:
-- Mean of the dependent variable.
-- Standard deviation of the dependent variable.
-- Median of the dependent variable.
-- Mean/s of the dependent variable after rejecting observations above standard deviation criterion/s you specify.
-- Number of observations of the dependent variable that were rejected for each standard deviation criterion/s.
-- Number of observations of the dependent variable before rejection.
-- Proportion of observations of the dependent variable that were rejected for each standard deviation criterion/s.
-- Harmonic mean of the dependent variable.
-- Percentiles of the dependent variable according to any percentile (default is 0.05, 0.25, 0.75, 0.95).
-- Mean and mean error in case of accuracy measures. 
-- Mean according to non-recursive procedure with moving criterion (Van Selst & Jolicoeur, 1994).
-- Mean according to modified-recursive procedure with moving criterion (Van Selst & Jolicoeur, 1994).
-- Mean according to hybrid-recursive procedure with moving criterion (Van Selst & Jolicoeur, 1994).
+- mdvc: Mean of the dependent variable.
+- sdvc: Standard deviation of the dependent variable.
+- meddvc: Median of the dependent variable.
+- tdvc: Mean/s of the dependent variable after rejecting observations above standard deviation criterion/s you specify.
+- ntr: Number of observations of the dependent variable that were rejected for each standard deviation criterion/s.
+- ndvc: Number of observations of the dependent variable before rejection.
+- ptr: Proportion of observations of the dependent variable that were rejected for each standard deviation criterion/s.
+- rminv: Harmonic mean of the dependent variable.
+- prt: Percentiles of the dependent variable according to any percentile (default is 0.05, 0.25, 0.75, 0.95).
+- mdvd: Mean of a second dependent variable (e.g., accuracy). 
+- merr: error rate (i.e., suitable when the second dependnet variable is accuracy).
+- nrmc: Mean according to non-recursive procedure with moving criterion (Van Selst & Jolicoeur, 1994).
+- nnrmc: Number of observations of the dependent variable that were rejected for the non-recursive procedure.
+- pnrmc: Proportion of observations of the dependent variable that were rejected for the non-recursive procedure.
+- tnrmc: Total number of observations upon which the non-recursive procedure was applied.
+- mrmc: Mean according to modified-recursive procedure with moving criterion (Van Selst & Jolicoeur, 1994).
+- nmrmc: Number of observations of the dependent variable that were rejected for the modified-recursive procedure.
+- pmrmc: Proportion of observations of the dependent variable that were rejected for the modified-recursive procedure.
+- tmrmc: Total number of observations upon which the modified-recursive procedure was applied.
+- hrmc: Mean according to hybrid-recursive procedure with moving criterion (Van Selst & Jolicoeur, 1994).
+- nhrmc: Number of observations of the dependent variable that were rejected for the hybrid-recursive procedure.
+- thrmc: Total number of observations upon which the hybrid-recursive procedure was applied.
 
 ## Example
 In the example below, we use `prep()` to go from one table containing data (after already merging the individuals raw data
@@ -63,33 +69,35 @@ head(stroopdata)
 
 # Perform prep
 finalized_data <- prep(
-      dataset = stroopdata  # Name of the dataset in case you already loaded it into R
-      , file_name = NULL  # Name of the file that contains the raw data after merging the individual raw data files
-      , id = "subject"  # Name of the column that contains the variable specifying the case identifier
-      , within_vars = c("block", "target_type")  # Name of column or columns that contain independent within-subject variables
-      , between_vars = c("order")  # Name of column or columns that contain independent between-subject variables
-      , dvc = "rt"  # Name of the column that contains the continuous dependent variable (e.g., reaction-time) 
-      , dvd = "ac"  # Name of the column that contains the discrete dependent variable (e.g., 0 and 1 for accuracy measures)
+      dataset = stroopdata  # Name of the merged raw data table in case you already loaded it into R.
+      , file_name = NULL  # Name of the file that contains the raw data after merging the individual raw data files.
+      , id = "subject"  # Name of the column that contains the variable specifying the case identifier.
+      , within_vars = c("block", "target_type")  # Name of column or columns that contain independent within-subject variables.
+      , between_vars = c("order")  # Name of column or columns that contain independent between-subject variables.
+      , dvc = "rt"  # Name of the column that contains the continuous dependent variable (e.g., reaction-time). 
+      , dvd = "ac"  # Name of the column that contains the discrete dependent variable (e.g., 0 and 1 for accuracy measures).
       , keep_trials = NULL
       , drop_vars = c()
-      , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"  # Keep for dvc only trials that meet these conditions 
-      , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"  # Keep for dvd only trials that meet these conditions
+      , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"  # Keep for dvc only trials that meet these conditions. 
+      , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"  # Keep for dvd only trials that meet these conditions.
       , id_properties = c()
-      , sd_criterion = c(1, 1.5, 2)  # Criterions to reject all observations above standard deviations specified here and then calculate means
-      , percentiles = c(0.05, 0.25, 0.75, 0.95)  # Percentiles of dvc
-      , outlier_removal = 2  # Perform modified recursive procedure with moving criterion
-      , keep_trials_outlier = "raw_data$ac == 1"  # Keep for outlier removal procedure only trials that meet this condition
+      , sd_criterion = c(1, 1.5, 2)  # Criterions to reject all observations above standard deviations specified here and then calculate means.
+      , percentiles = c(0.05, 0.25, 0.75, 0.95)  # Percentiles of dvc (any percentile is possible).
+      , outlier_removal = 2  # Perform modified recursive procedure with moving criterion.
+      , keep_trials_outlier = "raw_data$ac == 1"  # Keep for outlier removal procedure only trials that meet this condition.
       , decimal_places = 4
       , notification = TRUE
-      , dm = c()
-      , save_results = TRUE
-      , results_name = "results.txt"  # Name of the file that contains the finalized table
-      , save_summary = TRUE
+      , dm = c()  # See ?prep for more details on this argument.
+      , save_results = TRUE  # Create a txt file containing the finalized table.
+      , results_name = "results.txt"  # Name of the file that contains the finalized table.
+      , save_summary = TRUE  # Save a summary txt file with the important parameters of prep().
    )
    
-# Look at finalized_data
+# Look at finalized_data:
+# The hierarchical order for within_vars was first "block" (which has two levels- "1" and "2", and then "target_type"
+# (which also has two levels- "1" and "2"). This means that for each of the dependent measures we will get four columns. For # example mdvc1 is the mean for "block" 1 and "target_type" 2, mdvc2 is the mean for "block" 2 and "target_type" 1 etc.
 head(finalized_data)
-subject order    mdvc1     mdvc2     mdvc3     mdvc4    sdvc1    sdvc2    sdvc3
+    subject order    mdvc1     mdvc2     mdvc3     mdvc4    sdvc1    sdvc2    sdvc3
 5013    5013     2 863.1736 1038.4444 1081.0000 1103.1189 328.2833 214.1703 417.1448
 5020    5020     1 706.8741  781.1429  636.8056  712.9437 410.1729 361.9275 304.8082
 5021    5021     2 655.0280  742.0294  558.8611  652.5714 161.7873 170.3273 120.8668
@@ -167,8 +175,6 @@ subject order    mdvc1     mdvc2     mdvc3     mdvc4    sdvc1    sdvc2    sdvc3
 5023    144     34     36    142
 5024    144     35     36    144
 ```
-
-
 
 ## Refrences
 Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample size on outlier elimination. *The quarterly journal of
