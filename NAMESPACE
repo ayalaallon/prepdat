@@ -2,3 +2,5 @@
 
 export(prep)
 importFrom(dplyr, "%>%")
+importFrom("stats", "ave", "median", "quantile", "sd")
+importFrom("utils", "head", "read.csv", "read.table", "write.table")
