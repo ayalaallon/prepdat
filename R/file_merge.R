@@ -1,11 +1,15 @@
 #' Vertically Merge Files in a Directory into a Single Large Dataset
-#' 
-#' @description Vertically merge files in a directory into a single large
-#'    dataset. Directory should contain nothing but the files to be merged.
-#'    Files in the directory should all be either in txt or csv format.
+#'
+#' @description Concatenates raw data files of individual participants (in
+#'    which each line corresponds to a single trial in the experiment) to one
+#'    raw data file that includes all participants. In order for the function
+#'    to work, all raw data files you wish to merge should be put in one folder
+#'    containing nothing but the raw data files. In addition, the working
+#'    directory should be set to that folder. All raw data files should be in
+#'    the same format (either txt or csv).
 #' @param file_name A string with the name of the file of the large dataset the
 #'   function returns in case \code{save_table} is \code{TRUE}. Default is
-#'   \code{"dataset.txt"}. 
+#'   \code{"dataset.txt"}.
 #' @param save_table Logical. If TRUE, saves the dataset into a file. Default
 #'   is \code{TRUE}.
 #' @param notification Logical. If TRUE, prints messages about the progress of

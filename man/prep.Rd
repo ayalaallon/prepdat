@@ -170,15 +170,15 @@ A data frame with dependent measures for dependent variables by
 
      \code{meddvc}: median \code{dvc}.
 
-     \code{tdvc}: mean \code{dvc} after rejecting values above standard
-     deviation criterion/s specified \code{sd_criterion}.
+     \code{tdvc}: mean \code{dvc} after rejecting observations above
+     standard deviation criterion/s specified \code{sd_criterion}.
 
-     \code{ntr}: number of values rejected for each standard
-     deviation criterion/s specified \code{sd_criterion}.
+     \code{ntr}: number of observations rejected for each standard deviation
+     criterion/s specified \code{sd_criterion}.
 
-     \code{ndvc}: number of values before rejection.
+     \code{ndvc}: number of observations before rejection.
 
-     \code{ptr}: proportion of values rejected for each standard
+     \code{ptr}: proportion of observations rejected for each standard
      deviation criterion/s specified \code{sd_criterion}.
 
      \code{rminv}: harmonic mean \code{dvc}.
@@ -193,35 +193,35 @@ A data frame with dependent measures for dependent variables by
      \code{nrmc}: mean \code{dvc} according to non-recursive procedure with
      moving criterion.
 
-     \code{nnrmc}: number of values rejected for \code{dvc} according to
-     non-recursive procedure with moving criterion.
+     \code{nnrmc}: number of observations rejected for \code{dvc} according
+     to non-recursive procedure with moving criterion.
 
-     \code{pnrmc}: percent of values rejected for \code{dvc} according to
-     non-recursive procedure with moving criterion.
+     \code{pnrmc}: percent of observations rejected for \code{dvc} according
+     to non-recursive procedure with moving criterion.
 
-     \code{tnrmc}: total number of values upon which the non-recursive
-     procedure with moving criterion was calculated.
+     \code{tnrmc}: total number of observations upon which the non-recursive
+     procedure with moving criterion was applied.
 
      \code{mrmc}: mean \code{dvc} according to modified-recursive procedure
      with moving criterion.
 
-     \code{nmrmc}: number of values rejected for \code{dvc} according to
-     modified-recursive procedure with moving criterion.
+     \code{nmrmc}: number of observations rejected for \code{dvc} according
+     to modified-recursive procedure with moving criterion.
 
-     \code{pmrmc}: percent of values rejected for \code{dvc} according to
-     modified-recursive procedure with moving criterion.
+     \code{pmrmc}: percent of observations rejected for \code{dvc} according
+     to modified-recursive procedure with moving criterion.
 
-     \code{tmrmc}: total number of values upon which the modified-recursive
-     procedure with moving criterion was calculated.
+     \code{tmrmc}: total number of observations upon which the
+     modified-recursive procedure with moving criterion was applied.
 
      \code{hrmc}: mean \code{dvc} according to hybrid-recursive procedure
      with moving criterion.
 
-     \code{nhrmc}: number of values rejected for \code{dvc} according to
-     hybrid-recursive procedure with moving criterion.
+     \code{nhrmc}: number of observations rejected for \code{dvc} according
+     to hybrid-recursive procedure with moving criterion.
 
-     \code{thrmc}: total number of values upon which the hybrid-recursive
-     procedure with moving criterion was calculated.
+     \code{thrmc}: total number of observations upon which the
+     hybrid-recursive procedure with moving criterion was applied.
 }
 \description{
 \code{prep()} aggregates a single dataset according to any
@@ -230,16 +230,16 @@ and within-subjects independent variables, respectively), and returns a data
 frame with a number of dependent measures for further analysis for each
 experimental cell according to the combination of provided grouping
 variables. Dependent measures for each experimental cell include among
-others means before and after rejecting all values according to a flexible
-standard deviation criterion/s, number of rejected values according to the
-flexible standard deviation criterion/s, proportions of rejected values
-according to the flexible standard deviation criterion/s, number of values
-before rejection, means after rejecting values according to procedures
-described in Van Selst & Jolicoeur (1994) (suitable when measuring
-reaction-times), standard deviations, medians, means according to any
-percentile (e.g., 0.05, 0.25, 0.75, 0.95) and harmonic means. The data frame
-prep() returns can also be exported as a txt file to be used for statistical
-analysis in other statistical programs.
+others means before and after rejecting all observations according to a
+flexible standard deviation criterion/s, number of rejected observations
+according to the flexible standard deviation criterion/s, proportions of
+rejected observations according to the flexible standard deviation
+criterion/s, number of observations before rejection, means after rejecting
+observations according to procedures described in Van Selst & Jolicoeur
+(1994) (suitable when measuring reaction-times), standard deviations,
+medians, means according to any percentile (e.g., 0.05, 0.25, 0.75, 0.95)
+and harmonic means. The data frame prep() returns can also be exported as
+a txt file to be used for statistical analysis in other statistical programs.
 }
 \examples{
 data(stroopdata)

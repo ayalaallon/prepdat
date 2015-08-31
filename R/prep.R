@@ -1,23 +1,22 @@
-#' Aggregate Long Format Data According to Grouping Variables and Generate a
-#' Number of Measures for Each Cell in the Aggregated Data for Further
-#' Analysis
+#' Creates One Finalized Table Ready for Statistical Analysis
 #'
 #'@description \code{prep()} aggregates a single dataset according to any
-#' combination of between and within grouping variables (i.e., between-subjects
-#' and within-subjects independent variables, respectively), and returns a data
-#' frame with a number of dependent measures for further analysis for each
-#' experimental cell according to the combination of provided grouping
-#' variables. Dependent measures for each experimental cell include among
-#' others means before and after rejecting all values according to a flexible
-#' standard deviation criterion/s, number of rejected values according to the
-#' flexible standard deviation criterion/s, proportions of rejected values
-#' according to the flexible standard deviation criterion/s, number of values
-#' before rejection, means after rejecting values according to procedures
-#' described in Van Selst & Jolicoeur (1994) (suitable when measuring
-#' reaction-times), standard deviations, medians, means according to any
-#' percentile (e.g., 0.05, 0.25, 0.75, 0.95) and harmonic means. The data frame
-#' prep() returns can also be exported as a txt file to be used for statistical
-#' analysis in other statistical programs.
+#'    combination of between and within grouping variables (i.e.,
+#'    between-subjects and within-subjects independent variables,
+#'    respectively), and returns a data frame with a number of dependent
+#'    measures for further analysis for each experimental cell according to the
+#'    combination of provided grouping variables. Dependent measures for each
+#'    experimental cell include among others means before and after rejecting
+#'    all observations according to a flexible standard deviation criterion/s,
+#'    number of rejected observations according to the flexible standard
+#'    deviation criterion/s, proportions of rejected observations according to
+#'    the flexible standard deviation criterion/s, number of observations
+#'    before rejection, means after rejecting observations according to
+#'    procedures described in Van Selst & Jolicoeur (1994) (suitable when
+#'    measuring reaction-times), standard deviations, medians, means according
+#'    to any percentile (e.g., 0.05, 0.25, 0.75, 0.95) and harmonic means. The
+#'    data frame prep() returns can also be exported as a txt file to be used
+#'    for statistical analysis in other statistical programs.
 #'
 #' @usage prep(
 #'    dataset = NULL
@@ -44,7 +43,7 @@
 #'    , save_summary = TRUE
 #' )
 #' @param dataset Name of the data frame in R that contains the long format
-#'   table after merging the individual data files using   
+#'   table after merging the individual data files using
 #'   \code{file_merge()}. Either \code{dataset} or \code{file_name} must be
 #'   provided. Default is \code{NULL}.
 #' @param file_name A string with the name of a txt or csv file (including the
@@ -147,7 +146,7 @@
 #' @param results_name A string of the name of the data frame the function
 #'   returns in case \code{save_results} is TRUE. Default is
 #'   \code{"results.txt"}.
-#' @param save_summary Logical. if TRUE, creats a summary txt file. Default is 
+#' @param save_summary Logical. if TRUE, creats a summary txt file. Default is
 #'   \code{TRUE}.
 #' @references Grange, J.A. (2015). trimr: An implementation of common response
 #'  time trimming methods. R Package Version 1.0.0.
@@ -167,15 +166,15 @@
 #'
 #'      \code{meddvc}: median \code{dvc}.
 #'
-#'      \code{tdvc}: mean \code{dvc} after rejecting values above standard
-#'      deviation criterion/s specified \code{sd_criterion}.
+#'      \code{tdvc}: mean \code{dvc} after rejecting observations above
+#'      standard deviation criterion/s specified \code{sd_criterion}.
 #'
-#'      \code{ntr}: number of values rejected for each standard
-#'      deviation criterion/s specified \code{sd_criterion}.
+#'      \code{ntr}: number of observations rejected for each standard deviation
+#'      criterion/s specified \code{sd_criterion}.
 #'
-#'      \code{ndvc}: number of values before rejection.
+#'      \code{ndvc}: number of observations before rejection.
 #'
-#'      \code{ptr}: proportion of values rejected for each standard
+#'      \code{ptr}: proportion of observations rejected for each standard
 #'      deviation criterion/s specified \code{sd_criterion}.
 #'
 #'      \code{rminv}: harmonic mean \code{dvc}.
@@ -190,36 +189,36 @@
 #'      \code{nrmc}: mean \code{dvc} according to non-recursive procedure with
 #'      moving criterion.
 #'
-#'      \code{nnrmc}: number of values rejected for \code{dvc} according to
-#'      non-recursive procedure with moving criterion.
+#'      \code{nnrmc}: number of observations rejected for \code{dvc} according
+#'      to non-recursive procedure with moving criterion.
 #'
-#'      \code{pnrmc}: percent of values rejected for \code{dvc} according to
-#'      non-recursive procedure with moving criterion.
+#'      \code{pnrmc}: percent of observations rejected for \code{dvc} according
+#'      to non-recursive procedure with moving criterion.
 #'
-#'      \code{tnrmc}: total number of values upon which the non-recursive
-#'      procedure with moving criterion was calculated.
+#'      \code{tnrmc}: total number of observations upon which the non-recursive
+#'      procedure with moving criterion was applied.
 #'
 #'      \code{mrmc}: mean \code{dvc} according to modified-recursive procedure
 #'      with moving criterion.
 #'
-#'      \code{nmrmc}: number of values rejected for \code{dvc} according to
-#'      modified-recursive procedure with moving criterion.
+#'      \code{nmrmc}: number of observations rejected for \code{dvc} according
+#'      to modified-recursive procedure with moving criterion.
 #'
-#'      \code{pmrmc}: percent of values rejected for \code{dvc} according to
-#'      modified-recursive procedure with moving criterion.
+#'      \code{pmrmc}: percent of observations rejected for \code{dvc} according
+#'      to modified-recursive procedure with moving criterion.
 #'
-#'      \code{tmrmc}: total number of values upon which the modified-recursive
-#'      procedure with moving criterion was calculated.
+#'      \code{tmrmc}: total number of observations upon which the
+#'      modified-recursive procedure with moving criterion was applied.
 #'
 #'      \code{hrmc}: mean \code{dvc} according to hybrid-recursive procedure
 #'      with moving criterion.
 #'
-#'      \code{nhrmc}: number of values rejected for \code{dvc} according to
-#'      hybrid-recursive procedure with moving criterion.
+#'      \code{nhrmc}: number of observations rejected for \code{dvc} according
+#'      to hybrid-recursive procedure with moving criterion.
 #'
-#'      \code{thrmc}: total number of values upon which the hybrid-recursive
-#'      procedure with moving criterion was calculated.
-#' @export      
+#'      \code{thrmc}: total number of observations upon which the
+#'      hybrid-recursive procedure with moving criterion was applied.
+#' @export
 #' @examples
 #' data(stroopdata)
 #' x1 <- prep(
@@ -246,7 +245,7 @@
 #'          , results_name = "results.txt"
 #'          , save_summary = TRUE
 #'       )
-#'       
+#'
 prep <- function(dataset = NULL, file_name = NULL, id = NULL,
                  within_vars =  c(), between_vars = c(), dvc = NULL,
                  dvd = NULL, keep_trials = NULL, drop_vars = c(),
@@ -355,7 +354,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     # Save drop_vars as a string before parsing in order to later use when
     # writing Summary file
     drop_col_sum <- drop_vars
-    
+
     # Subset variables by keeping all columns except the ones in drop_vars
     raw_data <- raw_data[, !(colnames(raw_data) %in% drop_vars)]
     if (notification == TRUE) {
@@ -648,7 +647,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         sd_criterion_names[l] <- paste("t", sd_criterion[l], "dvc" ,sep = "")
         l <- l + 1
       }
-      # Change names of id and dvc columns because later I use "dplyr" which 
+      # Change names of id and dvc columns because later I use "dplyr" which
       # makes it easier
       # Change name of id column to "id"
       names(raw_data_dvc)[names(raw_data_dvc) == id] <- "id"
