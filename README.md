@@ -23,7 +23,7 @@ experiment, to one finalized table ready for statistical analysis, in which each
 of each participant according to specified dependent and independent variables. prepdat also includes several other possibilities
 for the aggregated values such as medians of the dependent variable and trimming procedures for reaction-times according to Van
 Selst & Jolicoeur (1994).
-## Overview
+## Using prepdat
 The two major functions you need to know in order to use *prepdat* are `file_merge()` and `prep()`.
 ### file_merge()
 The `file_merge()` function concatenates raw data files of individual participants (in which each line corresponds to a single trial in the experiment) to one raw data file that includes all participants. In order for the function to work, all raw data files you wish to merge should be put in one folder containing nothing but the raw data files. In addition, the working directory should be set to that folder. All raw data files should be in the same format (either txt or csv). 
