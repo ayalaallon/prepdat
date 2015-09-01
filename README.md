@@ -208,7 +208,7 @@ head(finalized_data)
 5024    144     35     36    144
 ```
 
-## Refrences
+## References
 Grange, J.A. (2015). trimr: An implementation of common response time trimming methods. R Package Version 1.0.1. https://cran.r-project.org/package=trimr
 
 Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample size on outlier elimination. *The quarterly journal of
