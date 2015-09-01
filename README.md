@@ -1,4 +1,22 @@
 # Prepdat: Preparing Experimental Data for Statistical Analysis
+
+## Installation
+A stable release of *prep* is now available on CRAN https://cran.r-project.org/package=prepdat.
+To install *prep* use:
+```ruby
+install.packages("prep")
+```
+
+To install the latest version of *prep* (i.e., the development version of next release), install devtools, and then install directly from GitHub by using:
+
+```ruby
+# install devtools
+install.packages("devtools")
+
+# install prepdat from GitHub
+devools::install_github("ayalaallon/prepdat")`
+```
+## Overview
 *prepdat* is an R package that integrates raw data files collected from individual participants (usually from a psychological
 experiment), enabling the user to go from raw data files, in which each line corresponds to one trial conducted during the
 experiment, to one finalized table ready for statistical analysis, in which each line corresponds to the averaged performance
@@ -191,6 +209,8 @@ head(finalized_data)
 ```
 
 ## Refrences
+Grange, J.A. (2015). trimr: An implementation of common response time trimming methods. R Package Version 1.0.1. https://cran.r-project.org/package=trimr
+
 Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample size on outlier elimination. *The quarterly journal of
 experimental psychology, 47* (3), 631-650.
 
