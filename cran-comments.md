@@ -1,3 +1,20 @@
+# Resubmission #2
+This is resumission for prepdat 1.0.2
+
+In this version I:
+- Changed URL to CRAN URL canonical form https://cran.r-project.org/package=trimr in:
+  -  man/hybrid_recursive_mc.Rd
+  - man/modified_recursive_mc.Rd
+  - man/non_recursive_mc.Rd
+  - man/prep.Rd
+- Updated version number.
+
+# R CMD Check Results for prepdat 1.0.2
+
+Using `devtools::check(document = FALSE)`
+
+There were no ERRORs, WARNINGs, or NOTEs.
+
 # Resubmission
 This is resubmission for prepdat 1.0.1
 
