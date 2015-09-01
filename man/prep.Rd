@@ -2,9 +2,7 @@
 % Please edit documentation in R/prep.R
 \name{prep}
 \alias{prep}
-\title{Aggregate Long Format Data According to Grouping Variables and Generate a
-Number of Measures for Each Cell in the Aggregated Data for Further
-Analysis}
+\title{Creates One Finalized Table Ready for Statistical Analysis}
 \usage{
 prep(
    dataset = NULL
@@ -225,25 +223,26 @@ A data frame with dependent measures for dependent variables by
 }
 \description{
 \code{prep()} aggregates a single dataset according to any
-combination of between and within grouping variables (i.e., between-subjects
-and within-subjects independent variables, respectively), and returns a data
-frame with a number of dependent measures for further analysis for each
-experimental cell according to the combination of provided grouping
-variables. Dependent measures for each experimental cell include among
-others means before and after rejecting all observations according to a
-flexible standard deviation criterion/s, number of rejected observations
-according to the flexible standard deviation criterion/s, proportions of
-rejected observations according to the flexible standard deviation
-criterion/s, number of observations before rejection, means after rejecting
-observations according to procedures described in Van Selst & Jolicoeur
-(1994) (suitable when measuring reaction-times), standard deviations,
-medians, means according to any percentile (e.g., 0.05, 0.25, 0.75, 0.95)
-and harmonic means. The data frame prep() returns can also be exported as
-a txt file to be used for statistical analysis in other statistical programs.
+   combination of between and within grouping variables (i.e.,
+   between-subjects and within-subjects independent variables,
+   respectively), and returns a data frame with a number of dependent
+   measures for further analysis for each experimental cell according to the
+   combination of provided grouping variables. Dependent measures for each
+   experimental cell include among others means before and after rejecting
+   all observations according to a flexible standard deviation criterion/s,
+   number of rejected observations according to the flexible standard
+   deviation criterion/s, proportions of rejected observations according to
+   the flexible standard deviation criterion/s, number of observations
+   before rejection, means after rejecting observations according to
+   procedures described in Van Selst & Jolicoeur (1994) (suitable when
+   measuring reaction-times), standard deviations, medians, means according
+   to any percentile (e.g., 0.05, 0.25, 0.75, 0.95) and harmonic means. The
+   data frame prep() returns can also be exported as a txt file to be used
+   for statistical analysis in other statistical programs.
 }
 \examples{
 data(stroopdata)
-x1 <- prep(
+finalized_data <- prep(
          dataset = stroopdata
          , file_name = NULL
          , id = "subject"
@@ -271,7 +270,7 @@ x1 <- prep(
 \references{
 Grange, J.A. (2015). trimr: An implementation of common response
  time trimming methods. R Package Version 1.0.0.
- \url{http://cran.r-project.org/web/packages/trimr/}
+ \url{https://cran.r-project.org/package=trimr}
 
 Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample
 size on outlier elimination. \emph{The quarterly journal of experimental

@@ -7,7 +7,7 @@
 #'   \code{NA}.
 #' @references Grange, J.A. (2015). trimr: An implementation of common response
 #'   time trimming methods. R Package Version 1.0.0.
-#'   \url{http://cran.r-project.org/web/packages/trimr/}
+#'   \url{https://cran.r-project.org/package=trimr}
 #'
 #' Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample
 #' size on outlier elimination. \emph{The quarterly journal of experimental
@@ -19,20 +19,20 @@ non_recursive_mc <- function(exp_cell) {
 
   # Load creiterion cutoffs according to Table 4 in vanSelst & Jolicoeur (1994)
   linear_interpolation <- linear_interpolation
-  
+
   # Get sample size of data
   sample_size <- length(exp_cell)
 
-  # The procedure takes place only if there are at least 4 trials 
+  # The procedure takes place only if there are at least 4 trials
   if (sample_size >= 4) {
-    
+
     # If sample is greater than 100, use SDs for 100.
     if (sample_size > 100) {sample_size <- 100}
-    
+
     # Look up sample size in the table and find the required standard deviation
     # this looks in the "non_recursive" column, obviously
     cutoff <- linear_interpolation$non_recursive[sample_size]
-    
+
     ## Now use these values to complete the trimming
     # Calculate SD of exp_cell according to denominator n
     sd_exp_cell <- sd(exp_cell) * sqrt((length(exp_cell) - 1) / (length(exp_cell)))
@@ -44,7 +44,7 @@ non_recursive_mc <- function(exp_cell) {
     mincutoff <- mean(exp_cell) - sd_max
     # Find trials to include based on min and max cutoffs
     included_trials <- exp_cell < maxcutoff & exp_cell > mincutoff
-    
+
     ## Compute final data (mean, number of trials removes and percent removed)
     final_data <- exp_cell[included_trials]
     # Number of trails removed

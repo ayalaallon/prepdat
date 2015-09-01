@@ -1,4 +1,4 @@
-#' Hybrid-recursive Outlier Removal Procedure with Moving Criterion 
+#' Hybrid-recursive Outlier Removal Procedure with Moving Criterion
 #'
 #' @description Hybrid-recursive outlier removal procedure with moving
 #'   criterion according to Van Selst & Jolicoeur (1994).
@@ -7,7 +7,7 @@
 #'   \code{NA}.
 #' @references Grange, J.A. (2015). trimr: An implementation of common response
 #'   time trimming methods. R Package Version 1.0.0.
-#'   \url{http://cran.r-project.org/web/packages/trimr/}
+#'   \url{https://cran.r-project.org/package=trimr}
 #'
 #' Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample
 #' size on outlier elimination. \emph{The quarterly journal of experimental

@@ -22,8 +22,12 @@ the function. Default is \code{TRUE}.}
 The merged dataset \code{dataset}.
 }
 \description{
-Vertically merge files in a directory into a single large
-   dataset. Directory should contain nothing but the files to be merged.
-   Files in the directory should all be either in txt or csv format.
+Concatenates raw data files of individual participants (in
+   which each line corresponds to a single trial in the experiment) to one
+   raw data file that includes all participants. In order for the function
+   to work, all raw data files you wish to merge should be put in one folder
+   containing nothing but the raw data files. In addition, the working
+   directory should be set to that folder. All raw data files should be in
+   the same format (either txt or csv).
 }
 

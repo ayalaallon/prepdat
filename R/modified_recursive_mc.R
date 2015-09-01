@@ -7,7 +7,7 @@
 #'   \code{NA}.
 #' @references Grange, J.A. (2015). trimr: An implementation of common
 #'   response time trimming methods. R Package Version 1.0.0.
-#'   \url{http://cran.r-project.org/web/packages/trimr/}
+#'   \url{https://cran.r-project.org/package=trimr}
 #'
 #' Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample
 #' size on outlier elimination. \emph{The quarterly journal of experimental
@@ -19,7 +19,7 @@ modified_recursive_mc <- function(exp_cell) {
 
   # Load creiterion cutoffs according to Table 4 in vanSelst & Jolicoeur (1994)
   linear_interpolation <- linear_interpolation
-  
+
   # Total number of trials before getting into the loop
   total_trials <- length(exp_cell)
   # Number of trials removed
@@ -27,19 +27,19 @@ modified_recursive_mc <- function(exp_cell) {
 
   # Go into the loop only if exp_cell has at least 4 trials
   if (length(exp_cell) >= 4 ) {
-      # Recursion loop 
+      # Recursion loop
       repeat {
-        
+
         # Get sample size of data
         sample_size <- length(exp_cell)
-    
+
         # If sample is greater than 100, use SDs for 100.
         if (sample_size > 100) {sample_size <- 100}
-    
+
         # Look up sample size in the table and find the required standard deviation
         # this looks in the "modified_recursive" column
         cutoff <- linear_interpolation$modified_recursive[sample_size]
-        
+
         ## Now do the removal of trials
         # Find the largest value in the data structure
         x <- max(exp_cell)
@@ -53,14 +53,14 @@ modified_recursive_mc <- function(exp_cell) {
         maxcutoff <- sd_max + mean(temp_data)
         # Find minimum cutoff value of main data
         mincutoff <- mean(temp_data) - sd_max
-    
+
         # From here we are using the main data (i.e. temporary removal above has
         # been replaced)
         # Find the largest value in the main data structure
         x <- max(exp_cell)
         # Find the smallest value in the main data structure
         y <- min(exp_cell)
-    
+
         # Reset before looping. This will store how many trials have
         # been removed on each recursion. The loop stops when no trials have been
         # removed on a particular iteration
@@ -71,25 +71,25 @@ modified_recursive_mc <- function(exp_cell) {
           removed_trials <- 1
           num_removed <- num_removed + 1
         }
-    
+
         # If there is a data point below the cutoff, remove it
         if(y < mincutoff) {
           exp_cell <- exp_cell[exp_cell != y]
           removed_trials <- 1
           num_removed <- num_removed + 1
         }
-    
+
         # When there are no trials removed on the current iteration, break the loop
         if (removed_trials == 0) {break}
-    
+
         # Alternatively, stop the loop when the restricted data size hits 4
         # (as in vanSelst & Jolicoeur, 1994)
         if (length(exp_cell) < 5) {break}
       }  # End of repeat
 
-    # Compute the mean of the final data set. 
+    # Compute the mean of the final data set.
     final_data <- mean(exp_cell)
-    
+
   } else {
     # If there are 4 RTs or less, then return NA
     final_data <- NA

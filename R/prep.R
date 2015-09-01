@@ -150,7 +150,7 @@
 #'   \code{TRUE}.
 #' @references Grange, J.A. (2015). trimr: An implementation of common response
 #'  time trimming methods. R Package Version 1.0.0.
-#'  \url{http://cran.r-project.org/web/packages/trimr/}
+#'  \url{https://cran.r-project.org/package=trimr}
 #'
 #' Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample
 #' size on outlier elimination. \emph{The quarterly journal of experimental
@@ -221,7 +221,7 @@
 #' @export
 #' @examples
 #' data(stroopdata)
-#' x1 <- prep(
+#' finalized_data <- prep(
 #'          dataset = stroopdata
 #'          , file_name = NULL
 #'          , id = "subject"
