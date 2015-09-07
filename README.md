@@ -1,11 +1,29 @@
 # Prepdat: Preparing Experimental Data for Statistical Analysis
+
+## Installation
+A stable release of *prepdat* is now available on CRAN https://cran.r-project.org/package=prepdat.
+To install *prepdat* use:
+```ruby
+install.packages("prep")
+```
+
+To install the latest version of *prepdat* (i.e., the development version of next release), install devtools, and then install directly from GitHub by using:
+
+```ruby
+# install devtools
+install.packages("devtools")
+
+# install prepdat from GitHub
+devools::install_github("ayalaallon/prepdat")`
+```
+## Overview
 *prepdat* is an R package that integrates raw data files collected from individual participants (usually from a psychological
 experiment), enabling the user to go from raw data files, in which each line corresponds to one trial conducted during the
 experiment, to one finalized table ready for statistical analysis, in which each line corresponds to the averaged performance
 of each participant according to specified dependent and independent variables. *prepdat* also includes several other possibilities
 for the aggregated values such as medians of the dependent variable and trimming procedures for reaction-times according to Van
 Selst & Jolicoeur (1994).
-## Overview
+## Using prepdat
 The two major functions you need to know in order to use *prepdat* are `file_merge()` and `prep()`.
 ### file_merge()
 The `file_merge()` function concatenates raw data files of individual participants (in which each line corresponds to a single trial in the experiment) to one raw data file that includes all participants. In order for the function to work, all raw data files you wish to merge should be put in one folder containing nothing but the raw data files. In addition, the working directory should be set to that folder. All raw data files should be in the same format (either txt or csv). 
@@ -190,7 +208,9 @@ head(finalized_data)
 5024    144     35     36    144
 ```
 
-## Refrences
+## References
+Grange, J.A. (2015). trimr: An implementation of common response time trimming methods. R Package Version 1.0.1. https://cran.r-project.org/package=trimr
+
 Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample size on outlier elimination. *The quarterly journal of
 experimental psychology, 47* (3), 631-650.
 
