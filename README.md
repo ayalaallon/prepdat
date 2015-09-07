@@ -2,7 +2,7 @@
 *prepdat* is an R package that integrates raw data files collected from individual participants (usually from a psychological
 experiment), enabling the user to go from raw data files, in which each line corresponds to one trial conducted during the
 experiment, to one finalized table ready for statistical analysis, in which each line corresponds to the averaged performance
-of each participant according to specified dependent and independent variables. prepdat also includes several other possibilities
+of each participant according to specified dependent and independent variables. *prepdat* also includes several other possibilities
 for the aggregated values such as medians of the dependent variable and trimming procedures for reaction-times according to Van
 Selst & Jolicoeur (1994).
 ## Overview
