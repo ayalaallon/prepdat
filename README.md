@@ -1,13 +1,13 @@
 # Prepdat: Preparing Experimental Data for Statistical Analysis
 
 ## Installation
-A stable release of *prep* is now available on CRAN https://cran.r-project.org/package=prepdat.
-To install *prep* use:
+A stable release of *prepdat* is now available on CRAN https://cran.r-project.org/package=prepdat.
+To install *prepdat* use:
 ```ruby
 install.packages("prep")
 ```
 
-To install the latest version of *prep* (i.e., the development version of next release), install devtools, and then install directly from GitHub by using:
+To install the latest version of *prepdat* (i.e., the development version of next release), install devtools, and then install directly from GitHub by using:
 
 ```ruby
 # install devtools
