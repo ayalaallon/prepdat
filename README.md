@@ -4,7 +4,7 @@
 A stable release of *prepdat* is now available on CRAN https://cran.r-project.org/package=prepdat.
 To install *prepdat* use:
 ```ruby
-install.packages("prep")
+install.packages("prepdat")
 ```
 
 To install the latest version of *prepdat* (i.e., the development version of next release), install devtools, and then install directly from GitHub by using:
