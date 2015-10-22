@@ -363,7 +363,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       print(head(raw_data))
     }
   } else {
-    drop_col_sum <- class(drop)
+    drop_col_sum <- "NULL"
   }
   # End of if(length(drop_vars) > 0)
 
@@ -1096,11 +1096,10 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     }
     # Message
     if (save_results == TRUE) {
-      message(paste("                                ", results_name, "has", dim(results)[1],
-                    "observations and", dim(results)[2], "variables"))
+      message(paste(results_name, "has", dim(results)[1], "observations and", dim(results)[2], "variables"))
     }
-    message("                                 prep() returned a data frame to console")
-    message("                 Hip Hip Hooray! prep() finished. Have a great day and may all your results be significant!")
+    message("prep() returned a data frame to console")
+    message("Hip Hip Hooray! prep() finished. Have a great day and may all your results be significant!")
 
     # Return
     return(round(results, digits = decimal_places))
@@ -1674,11 +1673,10 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     write.table(round(results, digits = decimal_places), row.names = FALSE, file = results_name)
     # Message
     if (save_results == TRUE) {
-      message(paste("                                ", results_name, "has", dim(results)[1],
-                    "observations and", dim(results)[2], "variables"))
+      message(paste(results_name, "has", dim(results)[1], "observations and", dim(results)[2], "variables"))
     }
-    message("                                 prep() returned a data frame to console")
-    message("                 Hip Hip Hooray! prep() finished. Have a great day and may all your results be significant!")
+    message("prep() returned a data frame to console")
+    message("Hip Hip Hooray! prep() finished. Have a great day and may all your results be significant!")
     # Return
     return(round(results, digits = decimal_places))
   }  # End of if (length(between_vars) > 0 & length(within_vars) == 0)
