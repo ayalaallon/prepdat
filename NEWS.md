@@ -1,4 +1,17 @@
-#prepdat 1.0.2
+# prepdat 1.0.3
+
+In this version I:
+- Exported the following functions:
+  - read_data()
+  - file_merge()
+  - non_recursive_mc()
+  - modified_recursive_mc()
+  - hybrid_recursive_mc()
+- Updated version number.
+- Changed alignment of notifications in perp().
+- Updated summary file prep() creats.
+
+# prepdat 1.0.2
 
 CRAN release
 
