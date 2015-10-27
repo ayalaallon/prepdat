@@ -14,7 +14,7 @@ To install the latest version of *prepdat* (i.e., the development version of nex
 install.packages("devtools")
 
 # install prepdat from GitHub
-devools::install_github("ayalaallon/prepdat")`
+devtools::install_github("ayalaallon/prepdat")
 ```
 ## Overview
 *prepdat* is an R package that integrates raw data files collected from individual participants (usually from a psychological
