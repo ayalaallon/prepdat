@@ -1,6 +1,6 @@
 Package: prepdat
 Title: Preparing Experimental Data for Statistical Analysis
-Version: 1.0.3
+Version: 1.0.4
 Authors@R: c(
     person("Ayala S.", "Allon", email = "ayalaallon@gmail.com", role = c("aut", "cre")),
     person("Roy", "Luria", role = "aut"),
