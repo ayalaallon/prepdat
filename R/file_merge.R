@@ -37,14 +37,17 @@ file_merge <- function(file_name = "dataset.txt", save_table = TRUE,
     }
   }
 
+  # Counter for loop
+  i <- 1
+
   # Merge files vertically
   for (file in file_list) {
 
     # Get file extension
     extension <- substr(file, nchar(file) - 3, nchar(file))
 
-    # Create large dataset in case it does not exists
-    if (!exists("dataset")) {
+    # Read first file in file_list into dataset
+    if (match(file_list[i], file_list) == 1) {
       if (extension == ".txt") {
         dataset <- read.table(file, header = TRUE)
       } else if (extension == ".csv") {
@@ -52,8 +55,8 @@ file_merge <- function(file_name = "dataset.txt", save_table = TRUE,
       }
     }
 
-    # Append current file to large dataset in case it already exists
-    if (exists("dataset")){
+    # Append current file to large dataset if it is not the first file
+    if (match(file_list[i], file_list) != 1) {
       # Read current file into temp_dataset
       if (extension == ".txt") {
         temp_dataset <- read.table(file, header = TRUE)
@@ -65,6 +68,9 @@ file_merge <- function(file_name = "dataset.txt", save_table = TRUE,
       # Remove temp_dataset
       rm(temp_dataset)
     }
+
+    # Increase counter
+    i <- i + 1
   }  # End of for loop
 
   # Save table in case save_table is set to TRUE
