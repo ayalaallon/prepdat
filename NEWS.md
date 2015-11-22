@@ -1,3 +1,9 @@
+# prepdat 1.0.4
+
+In this version I:
+- Bug fix in file_merge(): The file_merge() function concatenates all txt or csv files found in the working directory and merges them into one big table. The bug was that it concatenated the first file twice instead of only once and then moving to the next file. This bug is now fixed and files are read and merged only once.
+- Updated version number.
+
 # prepdat 1.0.3
 
 In this version I:
