@@ -417,7 +417,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     # Found id properties
     if (notification == TRUE) {
       # Message
-      message(paste("Found", length(id_properties), "id_propertiesi:", id_properties))
+      message(paste("Found", length(id_properties), "id properties"))
     }
     # Creates a data frame for id_properties according to the number of subjects
     id_properties_df <- data.frame(id_col)
@@ -544,7 +544,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       raw_data_dvd <- raw_data[keep_trials_dvd, ]
     } else {
       # Save keep_trials_dvd as "NULL" in order to later use when writing
-      #Summary file
+      # Summary file
       keep_trials_dvd_sum <- class(keep_trials_dvd)
       # Save raw_data as raw_data_dvd
       raw_data_dvd <- raw_data
