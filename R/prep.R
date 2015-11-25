@@ -1068,7 +1068,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       if (length(between_vars) > 0) {
         cat("* Between-subject independent variables:", "\n",file = sum_file_name, append = TRUE)
         for (lev in 1:length(between_vars)) {
-          cat(paste(" ", between_vars[[lev]], ": "), file = sum_file_name, append = TRUE)
+          cat(paste(" ", between_vars[[lev]], ": ", sep = ""), file = sum_file_name, append = TRUE)
           cat(levels(factor(raw_data[[between_vars[[lev]]]])), "\n", file = sum_file_name, append = TRUE)
         }
       } else {
@@ -1644,7 +1644,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       if (length(between_vars) > 0) {
         cat("* Between-subject independent variables:", "\n",file = sum_file_name, append = TRUE)
         for (lev in 1:length(between_vars)) {
-          cat(paste(" ", between_vars[[lev]], ": "), file = sum_file_name, append = TRUE)
+          cat(paste(" ", between_vars[[lev]], ": ", sep = ""), file = sum_file_name, append = TRUE)
           cat(levels(factor(raw_data[[between_vars[[lev]]]])), file = sum_file_name, append = TRUE)
           cat("\n", file = sum_file_name, append = TRUE)
         }
@@ -1663,7 +1663,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Write levels of within-subject indpendent variables
       cat("* Within-subject independent variables:", "\n", file = sum_file_name, append = TRUE)
       for (lev in 1:length(within_vars)) {
-        cat(paste(" ", within_vars[[lev]], ": "), file = sum_file_name, append = TRUE)
+        cat(paste(" ", within_vars[[lev]], ": ", sep = ""), file = sum_file_name, append = TRUE)
         cat(levels(factor(raw_data[[within_vars[[lev]]]])), file = sum_file_name, append = TRUE)
         cat("\n", file = sum_file_name, append = TRUE)
       }
