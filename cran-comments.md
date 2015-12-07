@@ -15,15 +15,15 @@ This is submission for prepdat 1.0.3
 
 In this version I:
 
-Exported the following functions:
-read_data()
-file_merge()
-non_recursive_mc()
-modified_recursive_mc()
-hybrid_recursive_mc()
-Updated version number.
-Changed alignment of notifications in perp().
-Summary file for prep() improved.
+- Exported the following functions:
+  - `read_data()`
+  - `file_merge()`
+  - `non_recursive_mc()`
+  - `modified_recursive_mc()`
+  - `hybrid_recursive_mc()`
+- Updated version number.
+- Changed alignment of notifications in `perp()`.
+- Summary file for `prep()` improved.
 
 # R CMD Check Results for prepdat 1.0.3
 
