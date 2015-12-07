@@ -1,4 +1,4 @@
-# Resubmission #4
+# Submission #4
 This is submission for prepdat 1.0.4
 
 - Bugfix in `file_merge()`: first file in the working directory was read and merged twice instead of once.
@@ -10,7 +10,7 @@ Using `devtools::check(document = FALSE)`
 
 There were no ERRORs, WARNINGs, or NOTEs.
 
-# Resubmission #3
+# Submission #3
 This is submission for prepdat 1.0.3
 
 In this version I:
