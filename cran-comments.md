@@ -1,5 +1,38 @@
+# Resubmission #4
+This is submission for prepdat 1.0.4
+
+- Bugfix in `file_merge()`: first file in the working directory was read and merged twice instead of once.
+- Version number updated.
+
+# R CMD Check Results for prepdat 1.0.4
+
+Using `devtools::check(document = FALSE)`
+
+There were no ERRORs, WARNINGs, or NOTEs.
+
+# Resubmission #3
+This is submission for prepdat 1.0.3
+
+In this version I:
+
+Exported the following functions:
+read_data()
+file_merge()
+non_recursive_mc()
+modified_recursive_mc()
+hybrid_recursive_mc()
+Updated version number.
+Changed alignment of notifications in perp().
+Summary file for prep() improved.
+
+# R CMD Check Results for prepdat 1.0.3
+
+Using `devtools::check(document = FALSE)`
+
+There were no ERRORs, WARNINGs, or NOTEs.
+
 # Resubmission #2
-This is resumission for prepdat 1.0.2
+This is resubmission for prepdat 1.0.2
 
 In this version I:
 - Changed URL to CRAN URL canonical form https://cran.r-project.org/package=trimr in:
