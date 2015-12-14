@@ -1,21 +1,20 @@
 # prepdat 1.0.4
 
-In this version I:
-- Bug fix in file_merge(): The file_merge() function concatenates all txt or csv files found in the working directory and merges them into one big table. The bug was that it concatenated the first file twice instead of only once and then moving to the next file. This bug is now fixed and files are read and merged only once.
-- Updated version number.
+- Bugfix in `file_merge()`: first file in the working directory was read and merged twice instead of once.
+- Version number updated.
 
 # prepdat 1.0.3
 
 In this version I:
 - Exported the following functions:
-  - read_data()
-  - file_merge()
-  - non_recursive_mc()
-  - modified_recursive_mc()
-  - hybrid_recursive_mc()
+  - `read_data()`
+  - `file_merge()`
+  - `non_recursive_mc()`
+  - `modified_recursive_mc()`
+  - `hybrid_recursive_mc()`
 - Updated version number.
-- Changed alignment of notifications in perp().
-- Updated summary file prep() creats.
+- Changed alignment of notifications in `perp()`.
+- Summary file for `prep()` improved.
 
 # prepdat 1.0.2
 
