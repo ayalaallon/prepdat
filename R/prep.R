@@ -131,8 +131,8 @@
 #'   logical conditions must be specified as \code{"raw_data$bar == baz"}
 #'   (e.g., \code{"raw_data$ac == 1"}). Defalut is \code{NULL}.
 #' @param decimal_places Numeric. Specifies number of decimals to be written
-#'   for each value in \code{results_name}. Value must be numeric. Default is
-#'   \code{4}.
+#'   for each value of continuous ependent measures in \code{results_name}.
+#'   Value must be numeric. Default is \code{4}.
 #' @param notification Logical. If TRUE, prints messages about the progress of
 #'   the functio. Default is \code{TRUE}.
 #' @param dm a Vector with names of dependent measures the function creats. If
@@ -152,7 +152,7 @@
 #'  time trimming methods. R Package Version 1.0.0.
 #'  \url{https://cran.r-project.org/package=trimr}
 #'
-#' Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample
+#' Van Selst, M., & Jolicoeur, P. (1994). A solution to the effect of sample
 #' size on outlier elimination. \emph{The quarterly journal of experimental
 #' psychology, 47}(3), 631-650.
 #'
@@ -238,7 +238,7 @@
 #'          , percentiles = c(0.05, 0.25, 0.75, 0.95)
 #'          , outlier_removal = 2
 #'          , keep_trials_outlier = "raw_data$ac == 1"
-#'          , decimal_places = 4
+#'          , decimal_places = 0
 #'          , notification = TRUE
 #'          , dm = c()
 #'          , save_results = TRUE
@@ -285,6 +285,9 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   if (is.null(dvc) & is.null(dvd)) {
     stop("Oops! Did not find dvc or dvd. You must enter at least one dependent variable")
   }
+
+  ## Number of decimal places for dvd
+  decimal_dvd <- 3
 
   ## Create name for summary file
   sum_file_name <- paste(substr(results_name, 0, nchar(results_name) - 4),
@@ -588,6 +591,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         dm_df[count] <- tapply(raw_data_dvc[[dvc]], list(raw_data_dvc[[id]]),
                                mean)
         colnames(dm_df)[count] <- "mdvc"
+        # Round mdvc according to decimal_places
+        dm_df[count] <- round(dm_df[count], digits = decimal_places)
         count <- count + 1
       }
 
@@ -606,6 +611,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         # Calculating sdvc using denominator n
         dm_df[count] <- dvc_sd_r * sqrt((l_dvc - 1) / (l_dvc))
         colnames(dm_df)[count] <- "sdvc"
+        # Round sdvc according to decimal_places
+        dm_df[count] <- round(dm_df[count], digits = decimal_places)
         count <- count + 1
       }
 
@@ -620,6 +627,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         dm_df[count] <- tapply(raw_data_dvc[[dvc]], list(raw_data_dvc[[id]]),
                                median)
         colnames(dm_df)[count] <- "meddvc"
+        # Round meddvc according to decimal_places
+        dm_df[count] <- round(dm_df[count], digits = decimal_places)
         count <- count + 1
       }
 
@@ -671,6 +680,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
                   dplyr::summarise(n = mean(dvc[abs(z_score) < sd_criterion[j]])) %>%
                   reshape2::dcast(id ~ sd_criterion_names[j], value.var = "n", fun = mean)
           dm_df[count] <- temp[-1]
+          # Round according to decimal_places
+          dm_df[count] <- round(dm_df[count], digits = decimal_places)
           count <- count + 1
           j <- j + 1
         }
@@ -767,6 +778,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
           }
           dm_df[count] <- temp
           colnames(dm_df)[count] <- ptr_names[j]
+          # Round according to digits = 3
+          dm_df[count] <- round(dm_df[count], digits = 3)
           count <- count + 1
           j <- j + 1
         }
@@ -784,6 +797,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         dm_df[count] <- tapply(raw_data_dvc$dvc, list(raw_data_dvc$id),
                                psych::harmonic.mean)
         colnames(dm_df)[count] <- "rminv"
+        # Round rminv according to decimal_places
+        dm_df[count] <- round(dm_df[count], digits = decimal_places)
         count <- count + 1
       }
       # End of rminv
@@ -812,6 +827,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
           dm_df[count] <- tapply(raw_data_dvc$dvc, list(raw_data_dvc$id),
                                  quantile, probs = percentiles[j])
           colnames(dm_df)[count] <- percentails_names[j]
+          # Round according to decimal_places
+          dm_df[count] <- round(dm_df[count], digits = decimal_places)
           count <- count + 1
           j <- j + 1
         }
@@ -932,6 +949,11 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         }
         # End of id for loop
 
+        # Round final_data according to decimal_places
+        final_data <- round(final_data, digits = decimal_places)
+        # Round percent_data according to digits = 3
+        percent_data <- round(percent_data, digits = 3)
+
         if (notification == TRUE) {
           # Messgae
           if (outlier_removal == 1) {
@@ -968,6 +990,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         }
         dm_df[count] <- tapply(raw_data_dvd[[dvd]], list(raw_data_dvd$id), mean)
         colnames(dm_df)[count] <- "mdvd"
+        # Round mdvd according to decimal_dvd
+        dm_df[count] <- round(dm_df[count], digits = decimal_dvd)
         count <- count + 1
       }
 
@@ -981,6 +1005,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         }
        dm_df[count] <- 1 - dm_df[["mdvd"]]
         colnames(dm_df)[count] <- "merr"
+        # Round merr according to decimal_dvd
+        dm_df[count] <- round(dm_df[count], digits = decimal_dvd)
         if (notification == TRUE) {
           # Message
           message("Finished calculating dependent measures for dvd")
@@ -1016,7 +1042,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     if (notification == TRUE) {
       # Message
       message("Printing head results to console")
-      print(head(round(results, digits = decimal_places)))
+      print(head(results))
     }
 
     ## Summary file
@@ -1091,8 +1117,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
     # Save results
     if (save_results == TRUE) {
-      write.table(round(results, digits = decimal_places), row.names = FALSE,
-                  file = results_name)
+      write.table(results, row.names = FALSE, file = results_name)
     }
     # Message
     if (save_results == TRUE) {
@@ -1102,7 +1127,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     message("Hip Hip Hooray! prep() finished. Have a great day and may all your results be significant!")
 
     # Return
-    return(round(results, digits = decimal_places))
+    return(results)
 
   # Checks if there are within-subject independent variables
   } else if (length(within_vars) > 0) {
@@ -1139,6 +1164,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
                                 value.var = "dvc")
         mdvc <- mdvc[-1]
         colnames(mdvc)[1:length(mdvc)] <- paste("mdvc", 1:length(mdvc), sep = "")
+        # Round mdvc according to decimal_places
+        mdvc <- round(mdvc, digits = decimal_places)
         # Bind
         temp_dm <- cbind(temp_dm, mdvc)
       }
@@ -1160,6 +1187,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         # Calculating SD using denominator n
         sdvc <- dvc_sd_r * sqrt((l_dvc - 1) / (l_dvc))
         colnames(sdvc) <- paste("sdvc", 1:dim(sdvc)[2], sep = "")
+        # Round sdvc according to decimal_places
+        sdvc <- round(sdvc, digits = decimal_places)
         # Bind
         temp_dm <- cbind(temp_dm, sdvc)
       }
@@ -1174,6 +1203,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
                                   value.var = "dvc", fill = NaN)
         meddvc <- meddvc[-1]
         colnames(meddvc) <- paste("meddvc", 1:dim(meddvc)[2], sep = "")
+        # Round meddvc according to decimal_places
+        meddvc <- round(meddvc, digits = decimal_places)
         # Bind
         temp_dm <- cbind(temp_dm, meddvc)
       }
@@ -1225,6 +1256,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
           j <- j + 1
         }
         tdvc_df <- tdvc_df[-1]
+        # Round tdvc_df according to decimal_places
+        tdvc_df <- round(tdvc_df, digits = decimal_places)
         # Bind
         temp_dm <- cbind(temp_dm, tdvc_df)
       }
@@ -1320,6 +1353,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
           i <- i + dim(ndvc)[2]
           j <- j + 1
         }
+        # Round ptr_df according to digits = 3
+        ptr_df <- round(ptr_df, digits = 3)
         # Bind
         temp_dm <- cbind(temp_dm, ptr_df)
       }
@@ -1334,6 +1369,9 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
                                  psych::harmonic.mean, value.var = "dvc")
         rminv <- rminv[-1]
         colnames(rminv) <- paste("rminv", 1:dim(rminv)[2], sep = "")
+        # Round rminv according to decimal_places
+        rminv <- round(rminv, digits = decimal_places)
+        # Bind
         temp_dm <- cbind(temp_dm, rminv)
       }
 
@@ -1369,6 +1407,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
           j <- j + 1
         }
         percentails_df <- percentails_df[-1]
+        # Round percentails_df according to decimal_places
+        percentails_df <- round(percentails_df, digits = decimal_places)
         # Bind
         temp_dm <- cbind(temp_dm, percentails_df)
       }
@@ -1496,6 +1536,11 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         }
         # End of id for loop
 
+        # Round final data according to decimal_places
+        final_data <- round(final_data, digits = decimal_places)
+        # Round percent_data according to digits = 3
+        percent_data <- round(percent_data, digits = 3)
+
         if (notification == TRUE) {
           # Messgae
           if (outlier_removal == 1) {
@@ -1534,6 +1579,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         mdvd <- reshape2::dcast(raw_data_dvd, id ~ within_condition, mean, value.var = "dvd")
         mdvd <- mdvd[-1]
         colnames(mdvd) <- paste("mdvd", 1:dim(mdvd)[2], sep = "")
+        # Round mdvd according to decimal_dvd
+        mdvd <- round(mdvd, digits = decimal_dvd)
         # Bind
         temp_dm <- cbind(temp_dm, mdvd)
       }
@@ -1546,6 +1593,8 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         }
         merr <- 1 - mdvd
         colnames(merr) <- paste("merr", 1:dim(merr)[2], sep = "")
+        # Round merr according to decimal_dvd
+        merr <- round(merr, digits = decimal_dvd)
         # Bind
         temp_dm <- cbind(temp_dm, merr)
       }
@@ -1593,7 +1642,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     if (notification == TRUE) {
       # Message
       message("Printing head results")
-      print(head(round(results, digits = decimal_places)))
+      print(head(results))
     }
 
     ## Summary
@@ -1670,7 +1719,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     }
 
     # Save results
-    write.table(round(results, digits = decimal_places), row.names = FALSE, file = results_name)
+    write.table(results, row.names = FALSE, file = results_name)
     # Message
     if (save_results == TRUE) {
       message(paste(results_name, "has", dim(results)[1], "observations and", dim(results)[2], "variables"))
@@ -1678,6 +1727,6 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     message("prep() returned a data frame to console")
     message("Hip Hip Hooray! prep() finished. Have a great day and may all your results be significant!")
     # Return
-    return(round(results, digits = decimal_places))
+    return(results)
   }  # End of if (length(between_vars) > 0 & length(within_vars) == 0)
-}  # End of advanced_prerp()
+}  # End of prep()
