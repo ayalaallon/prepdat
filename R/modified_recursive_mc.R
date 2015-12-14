@@ -9,7 +9,7 @@
 #'   response time trimming methods. R Package Version 1.0.0.
 #'   \url{https://cran.r-project.org/package=trimr}
 #'
-#' Selst, M. V., & Jolicoeur, P. (1994). A solution to the effect of sample
+#' Van Selst, M., & Jolicoeur, P. (1994). A solution to the effect of sample
 #' size on outlier elimination. \emph{The quarterly journal of experimental
 #' psychology, 47}(3), 631-650.
 #' @return A vector with the mean of \code{exp_cell} after removing outliers,
