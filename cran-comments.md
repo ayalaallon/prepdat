@@ -1,3 +1,15 @@
+# Submission #5
+This is submission for prepdat 1.0.5
+
+- `decimal_places` for `prep()` improved. 
+- Version number updated.
+
+# R CMD Check Results for prepdat 1.0.5 
+
+Using `devtools::check(document = FALSE)`
+
+There were no ERRORs, WARNINGs, or NOTEs.
+
 # Submission #4
 This is submission for prepdat 1.0.4
 
