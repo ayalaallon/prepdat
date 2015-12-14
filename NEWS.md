@@ -1,3 +1,7 @@
+# prepdat 1.0.5
+- `decimal_places` argument for `prep()` improved. 
+- Version number updated
+
 # prepdat 1.0.4
 
 - Bugfix in `file_merge()`: first file in the working directory was read and merged twice instead of once.
