@@ -1,22 +1,26 @@
 #' Creates One Finalized Table Ready for Statistical Analysis
 #'
-#'@description \code{prep()} aggregates a single dataset according to any
-#'    combination of between and within grouping variables (i.e.,
-#'    between-subjects and within-subjects independent variables,
-#'    respectively), and returns a data frame with a number of dependent
-#'    measures for further analysis for each experimental cell according to the
-#'    combination of provided grouping variables. Dependent measures for each
-#'    experimental cell include among others means before and after rejecting
-#'    all observations according to a flexible standard deviation criterion/s,
-#'    number of rejected observations according to the flexible standard
-#'    deviation criterion/s, proportions of rejected observations according to
-#'    the flexible standard deviation criterion/s, number of observations
-#'    before rejection, means after rejecting observations according to
-#'    procedures described in Van Selst & Jolicoeur (1994) (suitable when
-#'    measuring reaction-times), standard deviations, medians, means according
-#'    to any percentile (e.g., 0.05, 0.25, 0.75, 0.95) and harmonic means. The
-#'    data frame prep() returns can also be exported as a txt file to be used
-#'    for statistical analysis in other statistical programs.
+#'@description \code{prep()} aggregates a single dataset in a long format
+#'   according to any number of grouping variables. This makes \code{prep()}
+#'   suitable for aggregating data from various types of experimental designs
+#'   such as between-subjects, within-subjects (i.e., repeated measures), and
+#'   mixed designs (i.e., experimental designs that include both between- and
+#'   within- subjects independent variables). \code{prep()} returns a data
+#'   frame with a number of dependent measures for further analysis for each
+#'   aggregated cell (i.e., experimental cell) according to the  provided
+#'   grouping variables (i.e., independent variables). Dependent measures for
+#'   each experimental cell include among others means before and after
+#'   rejecting all observations according to a flexible standard deviation
+#'   criteria, number of rejected observations according to the flexible
+#'   standard deviation criteria, proportions of rejected observations
+#'   according to the flexible standard deviation criteria, number of
+#'   observations before rejection, means after rejecting observations
+#'   according to procedures described in Van Selst & Jolicoeur (1994;
+#'   suitable when measuring reaction-times), standard deviations, medians,
+#'   means according to any percentile (e.g., 0.05, 0.25, 0.75, 0.95) and
+#'   harmonic means. The data frame \code{prep()} returns can also be exported
+#'   as a txt file to be used for statistical analysis in other statistical
+#'   programs.
 #'
 #' @usage prep(
 #'    dataset = NULL
@@ -53,65 +57,93 @@
 #'   \code{NULL}.
 #' @param id A string with the name of the column in \code{file_name} or in
 #'   \code{dataset} that contains the variable specifying the case identifier
-#'   (e.g., \code{"subject_number"}). This should be a unique value per case.
-#'   Values in this column must be numeric. Argument must be provided. Default
-#'   is \code{NULL}.
-#' @param within_vars A vector with names of column or columns in
-#'   \code{file_name} or in \code{dataset} that contain independent
-#'   variables manipulated (or observed) within-ids (i.e., within-subjects,
-#'   repeated measures). Single or multiple values must be specified as a
-#'   string (e.g., \code{c("SOA", "condition")}) according to the hierarchical
-#'   order you wish. Values in these columns must be numeric. Either
-#'   \code{within_vars} or \code{between_vars} or both arguments must be
-#'   provided. Default is \code{c()}.
-#' @param between_vars A vector with names of column or columns in
+#'   (i.e., the variable upon which the measurement took place; e.g.,
+#'   \code{"subject_number"}). This should be a unique value per case. Values
+#'   in this column must be numeric. Argument must be provided. Default is
+#'   \code{NULL}.
+#' @param within_vars A vector with names of the grouping variables in
 #'   \code{file_name} or in \code{dataset} that contain independent variables
-#'   manipulated (or observed) between-ids (i.e., between-subjects). Single or
-#'   multiple values must be specified as a string (e.g., \code{c("order")}).
-#'   Values in this column must be numeric. Either \code{between_vars} or
+#'   manipulated (or observed) within-ids (i.e., within-subjects, repeated
+#'   measures). Single or multiple values must be specified as a string (e.g.,
+#'   \code{c("SOA", "condition")}) according to the hierarchical order you
+#'   wish. Note that the order of the names in \code{within_vars()} is
+#'   important because \code{prep()} aggregates the data for the dependent
+#'   measures by first dividing them to the levels of the first grouping
+#'   variable in \code{witin_vars()}, and then within each of those levels
+#'   \code{prep()} divides the data according to the next variable in
+#'   \code{within_vars()} and so forth. Values in these columns must be
+#'   numeric. Either \code{within_vars} or \code{between_vars} or both
+#'   arguments must be provided. Default is \code{c()}.
+#' @param between_vars A vector with names of the grouping variables in
+#'   \code{file_name} or in \code{dataset} that contain independent variables
+#'   manipulated (or observed) between-ids (i.e., between-subjects). Single
+#'   or multiple values must be specified as a string (e.g., \code{c("order")}).
+#'   Order of the names in \code{between_vars()} does not matter. Values in
+#'   this column must be numeric. Either \code{between_vars} or
 #'   \code{within_vars} or both arguments must be provided. Default is
 #'   \code{c()}.
 #' @param dvc A string with the name of the column in \code{file_name} or in
-#'   \code{dataset} that contains the dependent variable (e.g., \code{"rt"}
-#'   for reaction-time as a dependent variable). Values in this column must be
-#'   in an interval or ratio scale. Either \code{dvc} or \code{dvd} or both
+#'   \code{dataset} that contains the dependent variable (e.g., "rt" for
+#'   reaction-time as a dependent variable). Values in this column must be in
+#'   an interval or ratio scale. Either \code{dvc} or \code{dvd} or both
 #'   arguments must be provided. Default is \code{NULL}.
 #' @param dvd A string with the name of the column in \code{file_name} or in
 #'   \code{dataset} that contains the dependent variable (e.g., \code{"ac"}
 #'   for accuracy as a dependent variable). Values in this column must be
 #'   numeric and discrete (e.g., 0 and 1). Either \code{dvc} or \code{dvd} or
 #'   both arguments must be provided. Default is \code{NULL}.
-#' @param keep_trials A string. Keeps trials in the data frame according to
-#'   trials specified with logical conditions as strings. Single or multiple
-#'   logical conditions must be specified as \code{"raw_data$bar == baz"}
-#'   (e.g., \code{"raw_data$practice_experiment == 2 & raw_dada$block > 1"}).
-#'   Default is \code{NULL}.
-#' @param drop_vars A vector with names of columns to drop in \code{file_name}
+#' @param keep_trials A string. Allows deleting unnecessary observations and keeping
+#'   necessary observations in \code{file_name} or in \code{dataset} according
+#'   to logical conditions specified as a string. For example, if the dataset
+#'   contains practice trials for each subject, these trials should not be
+#'   included in the aggregation. The user should remove these trials by
+#'   specifying how they were coded in the raw data (i.e., data before
+#'   aggregation). For example, if practice trials are all the ones for which
+#'   the "block" column in the raw data tables equals to zero, the
+#'   \code{keep_trials} argument should be \code{"raw_data$block !== 0"}.
+#'   \code{raw_data} is the internal object in \code{prep()} representing the
+#'   merged table. All logical conditions in \code{keep_trials} should be put
+#'   in the same string and be concatenated by \code{&} or \code{|}. Logical
+#'   conditions for this argument can relate to different columns in the merged
+#'   table. Note that all further arguments of \code{prep()} will relate to the
+#'   remaining observations in the merged table. Default is \code{NULL}.
+#' @param drop_vars A vector with names of columns to delete in \code{file_name}
 #'   or in \code{dataset}. Single or multiple values must be specified as a
-#'   string (e.g., \code{c("font_size")}). Default is \code{c()}.
-#' @param keep_trials_dvc A string. Keeps trials for \code{dvc} data according
-#'   to trials specified with logical conditions as strings. Single or multiple
-#'   logical conditions must be specified as \code{"raw_data$bar == baz"}
+#'   string (e.g., \code{c("font_size")}). Order of the names in
+#'   \code{drop_vars} does not matter. Note that all further arguments of
+#'   \code{prep()} will relate to the remaining variables in the merged table.
+#'   Default is \code{c()}.
+#' @param keep_trials_dvc A string. Allows deleting unnecessary observations
+#'   and keeping necessary observations in \code{file_name} or in \code{dataset}
+#'   for calculations and aggregation of the dependent variable in \code{dvc}
+#'   according to logical conditions specified as a string. Logical conditions
+#'   should be specified as a string as in the \code{keep_trials} argument
 #'   (e.g., \code{"raw_data$rt > 100 & raw_data$rt < 3000 & raw_dada$ac == 1"}).
 #'   All dependent measures for \code{dvc} except for those specified in
-#'   \code{outlier_removal} will be calculated on these trials Defalut is
-#'   \code{NULL}.
-#' @param keep_trials_dvd A string. Keeps trials for \code{dvd} data according
-#'   to trials specified with logical conditions as strings. Single or multiple
-#'   logical conditions must be specified as \code{"raw_data$bar == baz"}
+#'   \code{outlier_removal} will be calculated on the remaining observations.
+#'   Defalut is \code{NULL}.
+#' @param keep_trials_dvd A string. Allows deleting unnecessary observations
+#'   and keeping necessary observations in \code{file_name} or in \code{dataset}
+#'   for calculations and aggregation of the dependent variable in \code{dvd}
+#'   according to logical conditions specified as a string. Logical conditions
+#'   should be specified as a string as in the \code{keep_trials argument}
 #'   (e.g., \code{raw_data$rt > 100 & raw_data$rt < 3000}). All dependent
-#'   measures for \code{dvd} will be calculated on these trials (i.e., "mdvd"
-#'   and "merr"). Default is \code{NULL}.
+#'   measures for \code{dvd} (i.e., \code{"mdvd"} and \code{"merr"}) will be
+#'   calculated on the remaining observations. Default is \code{NULL}.
 #' @param id_properties A vector with names of columns in \code{dataset} or in
-#'   \code{file_name} that describe ids and are not manipulated (or observed)
-#'   within-or between-ids (e.g., \code{c("age", "gender")}). Single or
-#'   multiple values must be specified as a string. Values in these columns
-#'   must be numeric. Default is \code{c()}.
-#' @param sd_criterion A vector containing criterions to reject all values
-#'   above a criterion number of standard deviations from the mean \code{dvc}
-#'   of each \code{id} by the combination of between and/or within grouping
-#'   independent variables. Values in this vector must be numeric. Default is
-#'   \code{c(1, 1.5, 2)}.
+#'   \code{file_name} that describe the ids (e.g., subjects) in the data and
+#'   are not manipulated (or observed) within-or between-ids. For example, in
+#'   case the user logged for each observation and for each id in an experiment
+#'   also the age and the gender of the subject, this argument will be
+#'   \code{c("age", "gender")}. Order of the names in \code{id_properties} does
+#'   not matter. Single or multiple values must be specified as a string.
+#'   Values in these columns must be numeric. Default is \code{c()}.
+#' @param sd_criterion A vector specifying a number of standard deviation
+#'   criteria for which \code{prep()} will calculate the mean \code{dvc} for
+#'   each cell in the finalized table after rejecting observations that did not
+#'   meet the criterion (e.g., rejecting all observations that were more than 2
+#'   standard deviations above or below the mean of that cell). Values in this
+#'   vector must be numeric. Default is \code{c(1, 1.5, 2)}.
 #' @param percentiles A vector containing wanted percentiles for \code{dvc}.
 #'   Values in this vector must be decimal numbers between 0 to 1. Percentiles
 #'   are calculated according to \code{type = 7} (see
@@ -125,40 +157,42 @@
 #'   Moving criterion is according to Table 4 in Van Selst & Jolicoeur (1994).
 #'   If experimental cell has 4 trials or less it will result in \code{NA}.
 #'   Default is \code{NULL}.
-#' @param keep_trials_outlier A string. Keeps trials according to trials
-#'   specified with logical conditions as strings. \code{outlier_removal}
-#'   procedure will be calculated on the remaining trials. Single or multiple
-#'   logical conditions must be specified as \code{"raw_data$bar == baz"}
-#'   (e.g., \code{"raw_data$ac == 1"}). Defalut is \code{NULL}.
+#' @param keep_trials_outlier A string. Allows deleting unnecessary
+#'   observations and keeping necessary observations in \code{file_name} or in
+#'   \code{dataset} for calculations and aggregation of the outlier removal
+#'   procedures by Van Selst & Jolicoeur (1994). Logical conditions should be
+#'   specified as a string as in the \code{keep_trials} argument (e.g.,
+#'   \code{"raw_data$ac == 1"}) \code{outlier_removal} procedure will be
+#'   calculated on the remaining observations. Defalut is \code{NULL}.
 #' @param decimal_places Numeric. Specifies number of decimals to be written
-#'   for each value of continuous ependent measures in \code{results_name}.
-#'   Value must be numeric. Default is \code{4}.
+#'   in \code{results_name} for each value of the dependent measures for
+#'   \code{dvc}. Value must be numeric. Default is \code{4}.
 #' @param notification Logical. If TRUE, prints messages about the progress of
-#'   the functio. Default is \code{TRUE}.
-#' @param dm a Vector with names of dependent measures the function creats. If
+#'   the function. Default is \code{TRUE}.
+#' @param dm a Vector with names of dependent measures the function returns. If
 #'   empty (i.e., \code{c()}) the function returns a data frame with all
-#'   dependent measures. Values in this vector must be strings from the
-#'   following list: "mdvc", "sdvc", "meddvc",
-#'   "tdvc", "ntr", "ndvc", "ptr", "prt", "rminv", "mdvd", "merr". Default is
+#'   possible dependent measures in \cide{prep()}. Values in this vector must
+#'   be strings from the following list: "mdvc", "sdvc", "meddvc", "tdvc",
+#'   "ntr", "ndvc", "ptr", "prt", "rminv", "mdvd", "merr". Default is
 #'   \code{c()}. See return for more details.
-#' @param save_results Logical. If TRUE, the function creats a txt file
+#' @param save_results Logical. If TRUE, the function creates a txt file
 #'   containing the returned data frame. Default is \code{TRUE}.
 #' @param results_name A string of the name of the data frame the function
 #'   returns in case \code{save_results} is TRUE. Default is
 #'   \code{"results.txt"}.
-#' @param save_summary Logical. if TRUE, creats a summary txt file. Default is
+#' @param save_summary Logical. if TRUE, creates a summary txt file. Default is
 #'   \code{TRUE}.
 #' @references Grange, J.A. (2015). trimr: An implementation of common response
-#'  time trimming methods. R Package Version 1.0.0.
-#'  \url{https://cran.r-project.org/package=trimr}
+#'  time trimming methods. R Package Version 1.0.1.
+#'  \url{https://CRAN.R-project.org/package=trimr}
 #'
 #' Van Selst, M., & Jolicoeur, P. (1994). A solution to the effect of sample
 #' size on outlier elimination. \emph{The quarterly journal of experimental
 #' psychology, 47}(3), 631-650.
 #'
 #'
-#' @return A data frame with dependent measures for dependent variables by
-#'  \code{id} and independent grouping variables:
+#' @return A data frame with dependent measures for the dependent variables in
+#'   \code{dvc} and \code{dvd} by \code{id} and grouping variables:
 #'
 #'      \code{mdvc}: mean \code{dvc}.
 #'
@@ -167,17 +201,17 @@
 #'      \code{meddvc}: median \code{dvc}.
 #'
 #'      \code{tdvc}: mean \code{dvc} after rejecting observations above
-#'      standard deviation criterion/s specified \code{sd_criterion}.
+#'      standard deviation criteria specified in \code{sd_criterion}.
 #'
 #'      \code{ntr}: number of observations rejected for each standard deviation
-#'      criterion/s specified \code{sd_criterion}.
+#'      criterion specified in \code{sd_criterion}.
 #'
 #'      \code{ndvc}: number of observations before rejection.
 #'
 #'      \code{ptr}: proportion of observations rejected for each standard
-#'      deviation criterion/s specified \code{sd_criterion}.
+#'      deviation criterion specified in \code{sd_criterion}.
 #'
-#'      \code{rminv}: harmonic mean \code{dvc}.
+#'      \code{rminv}: harmonic mean of \code{dvc}.
 #'
 #'      \code{prt}: \code{dvc} according to each of the percentiles specified
 #'      in \code{percentiles}.
