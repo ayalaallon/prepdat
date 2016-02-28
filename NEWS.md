@@ -1,3 +1,8 @@
+# prepdat 1.0.6
+- Documentation for `file_merge()` and `prep()` functions improved.
+- Description in the DESCRIPTION file improved.
+- Version number updated.
+
 # prepdat 1.0.5
 - `decimal_places` argument for `prep()` improved. 
 - Version number updated
