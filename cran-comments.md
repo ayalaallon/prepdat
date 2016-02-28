@@ -1,3 +1,17 @@
+# Submission #6
+This is submission for prepdat 1.0.6
+
+- Description part of the DESCRIPTION file improved.
+- Help section improved for `file_merge()`.
+- Help section improved for `prep()`.
+- Version number updated.
+
+# R CMD Check Results for prepdat 1.0.6
+
+Using `devtools::check(document = FALSE)`
+
+There were no ERRORs, WARNINGs, or NOTEs.
+
 # Submission #5
 This is submission for prepdat 1.0.5
 
