@@ -17,32 +17,30 @@ install.packages("devtools")
 devtools::install_github("ayalaallon/prepdat")
 ```
 ## Overview
-*prepdat* is an R package that integrates raw data files collected from individual participants (usually from a psychological
-experiment), enabling the user to go from raw data files, in which each line corresponds to one trial conducted during the
-experiment, to one finalized table ready for statistical analysis, in which each line corresponds to the averaged performance
-of each participant according to specified dependent and independent variables. *prepdat* also includes several other possibilities
+*prepdat* is an R package that enables the user to merge files containing data tables in a long format into a single large dataset and go form one single large dataset in a long format to one finalized aggregated table ready for statistical analysis. This pacakge is very useful for merging and aggregating raw data files of individual subjects in an experiment (in which each line corresponds to a single observation in the experiment) to one finalized table in which each line corresponds to the averaged performance
+of each subject according to specified dependent and independent variables. *prepdat* also includes several other possibilities
 for the aggregated values such as medians of the dependent variable and trimming procedures for reaction-times according to Van
-Selst & Jolicoeur (1994).
+Selst & Jolicoeur (1994). 
+
 ## Using prepdat
 The two major functions you need to know in order to use *prepdat* are `file_merge()` and `prep()`.
 ### file_merge()
-The `file_merge()` function concatenates raw data files of individual participants (in which each line corresponds to a single trial in the experiment) to one raw data file that includes all participants. In order for the function to work, all raw data files you wish to merge should be put in one folder containing nothing but the raw data files. In addition, the working directory should be set to that folder. All raw data files should be in the same format (either txt or csv). 
+The `file_merge()` function vertically concatenates files containing data tables in a long format into a single large dataset. In order for the function to work, all files you wish to merge should be put in one folder containing nothing but these files. In addition, the working directory should be set to that folder and all files should be in the same format (either txt or csv). This function is very useful for concatenating raw data files of individual subjects in an experiment (in which each line corresponds to a single observation in the experiment) to one raw data file that includes all subjects.
+
 ### prep()
-After you merged the raw data files using `file_merge()`, or any other function (for example using Eprime mergedat), you are ready
-to continue implementing *prepdat* by using the `prep()` function, which is the main function of *prepdat*.
+After you merged the raw data files using `file_merge()` (or any other function that results in a merged raw data file in a long format), you are ready to continue implementing *prepdat* by using the `prep()` function, which is the main function of *prepdat*.
 
 `prep()` takes the raw data table created in `file_merge()` (or by other functions) and creates one finalized table ready for
-statistical analysis. The finalized table contains for each participant the averaged or aggregated values (e.g., medians) of
-several possible dependent variables (e.g., reaction-time and accuracy) according to specified independent variables, which can be
-any combination of within-subject (a.k.a repeated measures) and between-subject independent variables. 
+statistical analysis. The finalized table contains for each subject (i.e., id) the averaged or aggregated values (e.g., medians) of
+several possible dependent variables (e.g., reaction-time and accuracy) according to specified independent variables (i.e., grouping variables), which can be any combination of within-subject (a.k.a repeated measures) and between-subject independent variables. 
 The possibilities for dependent measures include:
 - mdvc: Mean of the dependent variable.
 - sdvc: Standard deviation of the dependent variable.
 - meddvc: Median of the dependent variable.
-- tdvc: Mean/s of the dependent variable after rejecting observations above standard deviation criterion/s you specify.
-- ntr: Number of observations of the dependent variable that were rejected for each standard deviation criterion/s.
+- tdvc: Mean/s of the dependent variable after rejecting observations above standard deviation criteria you specify.
+- ntr: Number of observations of the dependent variable that were rejected for each standard deviation criteria.
 - ndvc: Number of observations of the dependent variable before rejection.
-- ptr: Proportion of observations of the dependent variable that were rejected for each standard deviation criterion/s.
+- ptr: Proportion of observations of the dependent variable that were rejected for each standard deviation criteria.
 - rminv: Harmonic mean of the dependent variable.
 - prt: Percentiles of the dependent variable according to any percentile (default is 0.05, 0.25, 0.75, 0.95).
 - mdvd: Mean of a second dependent variable (e.g., accuracy). 
