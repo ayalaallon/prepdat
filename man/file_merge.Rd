@@ -12,8 +12,8 @@ file_merge(file_name = "dataset.txt", save_table = TRUE,
 function returns in case \code{save_table} is \code{TRUE}. Default is
 \code{"dataset.txt"}.}
 
-\item{save_table}{Logical. If TRUE, saves the dataset into a file. Default
-is \code{TRUE}.}
+\item{save_table}{Logical. If TRUE, saves the dataset into a txt file.
+Default is \code{"dataset.txt"}.}
 
 \item{notification}{Logical. If TRUE, prints messages about the progress of
 the function. Default is \code{TRUE}.}
@@ -22,12 +22,14 @@ the function. Default is \code{TRUE}.}
 The merged dataset \code{dataset}.
 }
 \description{
-Concatenates raw data files of individual participants (in
-   which each line corresponds to a single trial in the experiment) to one
-   raw data file that includes all participants. In order for the function
-   to work, all raw data files you wish to merge should be put in one folder
-   containing nothing but the raw data files. In addition, the working
-   directory should be set to that folder. All raw data files should be in
-   the same format (either txt or csv).
+Vertically concatenates files containing data tables in a long
+  format into a single large dataset. In order for the function to work, all
+  files you wish to merge should be put in one folder containing nothing but
+  these files. In addition, the working directory should be set to that
+  folder and all files should be in the same format (either txt or csv).
+  This function is very useful for concatenating raw data files of
+  individual subjects in an experiment (in which each line corresponds to a
+  single observation in the experiment) to one raw data file that includes
+  all subjects.
 }
 

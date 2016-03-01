@@ -162,7 +162,7 @@
 #'   \code{dataset} for calculations and aggregation of the outlier removal
 #'   procedures by Van Selst & Jolicoeur (1994). Logical conditions should be
 #'   specified as a string as in the \code{keep_trials} argument (e.g.,
-#'   \code{"raw_data$ac == 1"}) \code{outlier_removal} procedure will be
+#'   \code{"raw_data$ac == 1"}). \code{outlier_removal} procedure will be
 #'   calculated on the remaining observations. Defalut is \code{NULL}.
 #' @param decimal_places Numeric. Specifies number of decimals to be written
 #'   in \code{results_name} for each value of the dependent measures for
@@ -171,7 +171,7 @@
 #'   the function. Default is \code{TRUE}.
 #' @param dm a Vector with names of dependent measures the function returns. If
 #'   empty (i.e., \code{c()}) the function returns a data frame with all
-#'   possible dependent measures in \cide{prep()}. Values in this vector must
+#'   possible dependent measures in \code{prep()}. Values in this vector must
 #'   be strings from the following list: "mdvc", "sdvc", "meddvc", "tdvc",
 #'   "ntr", "ndvc", "ptr", "prt", "rminv", "mdvd", "merr". Default is
 #'   \code{c()}. See return for more details.
