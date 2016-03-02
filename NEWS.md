@@ -1,3 +1,10 @@
+# prepdat 1.0.7
+- Bugfix: The improved help documents are now avialble for the users.
+  - Description part of the DESCRIPTION file improved.
+  - Help section improved for `file_merge()`.
+  - Help section improved for `prep()`.
+- Version number updated.
+
 # prepdat 1.0.6
 - Documentation for `file_merge()` and `prep()` functions improved.
 - Description in the DESCRIPTION file improved.
