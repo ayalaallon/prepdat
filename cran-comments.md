@@ -1,7 +1,7 @@
 # Submission #7
 This is important submission for prepdat 1.0.7
 
-- Bugfix: The improved help documents are now avialble for the users:
+- Bugfix: The improved help documents are now avialable for the users:
   - Description part of the DESCRIPTION file improved.
   - Help section improved for `file_merge()`.
   - Help section improved for `prep()`.
