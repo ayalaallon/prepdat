@@ -1,3 +1,24 @@
+# Submission #7
+This is important submission for prepdat 1.0.7
+
+- Bugfix: The improved help documents are now avialble for the users:
+  - Description part of the DESCRIPTION file improved.
+  - Help section improved for `file_merge()`.
+  - Help section improved for `prep()`.
+- Version number updated.
+
+# R CMD Check Results for prepdat 1.0.7
+
+Using `devtools::check(document = FALSE)`
+
+There were no ERRORs, WARNINGs, or NOTEs.
+
+# R CMD Check Results for prepdat 1.0.6
+
+Using `devtools::check(document = FALSE)`
+
+There were no ERRORs, WARNINGs, or NOTEs.
+
 # Submission #6
 This is submission for prepdat 1.0.6
 
