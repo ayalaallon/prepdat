@@ -14,6 +14,8 @@
 - `finalized_stroopdata` data frame added:
   - This is the finalized table `prep()` outputs for the example in `prep()`.
 - Documentation improved.
+- Updated `NAMESPACE` file according to `devtools::check(document = FALSE)` suggestion.
+- Version number updated.
 
 # prepdat 1.0.7
 - Bugfix: Improved help documents are now available for the users.
