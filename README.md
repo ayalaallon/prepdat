@@ -25,7 +25,7 @@ Selst & Jolicoeur (1994).
 ## Using prepdat
 The two major functions you need to know in order to use *prepdat* are `file_merge()` and `prep()`.
 ### file_merge()
-The `file_merge()` function vertically concatenates files containing data tables in a long format into a single large dataset. In order for the function to work, all files you wish to merge should be put in one folder containing nothing but these files. In addition, the working directory should be set to that folder and all files should be in the same format (either txt or csv). This function is very useful for concatenating raw data files of individual subjects in an experiment (in which each line corresponds to a single observation in the experiment) to one raw data file that includes all subjects.
+The `file_merge()` function vertically concatenates files containing data tables in a long format into a single large dataset. In order for the function to work, all files should be in the same format (either txt or csv). This function is very useful for concatenating raw data files of individual subjects in an experiment (in which each line corresponds to a single observation in the experiment) to one raw data file that includes all subjects.
 
 ### prep()
 After you merged the raw data files using `file_merge()` (or any other function that results in a merged raw data file in a long format), you are ready to continue implementing *prepdat* by using the `prep()` function, which is the main function of *prepdat*.
