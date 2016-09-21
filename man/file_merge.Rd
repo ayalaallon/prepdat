@@ -4,32 +4,66 @@
 \alias{file_merge}
 \title{Vertically Merge Files in a Directory into a Single Large Dataset}
 \usage{
-file_merge(file_name = "dataset.txt", save_table = TRUE,
-  notification = TRUE)
+file_merge(
+           folder_path = NULL
+           , has_header = TRUE
+           , new_header = c()
+           , raw_file_name = NULL
+           , raw_file_extension = NULL
+           , file_name = "dataset.txt"
+           , save_table = TRUE
+           , dir_save_table = NULL
+           , notification = TRUE
+          )
 }
 \arguments{
-\item{file_name}{A string with the name of the file of the large dataset the
-function returns in case \code{save_table} is \code{TRUE}. Default is
+\item{folder_path}{A string with the path of the folder in which files to be
+merged are searched. Search is recursive (i.e., can search also in
+subdirectories). \code{folder_path} must be provided. Default is
+\code{NULL}.}
+
+\item{has_header}{Logical. If \code{TRUE}, the function takes the first line
+of the first file found as the header of the merged table. Default is
+\code{TRUE}.}
+
+\item{new_header}{String vector with names for columns of the merged table.
+Default is \code{c()}. If used, \code{new_header} should be the same length
+as the number of columns in the merged table.}
+
+\item{raw_file_name}{A string with the name of the files to be searched
+and then merged. File extension should NOT be included here (see
+\code{raw_file_extension}). \code{raw_file_name} must be provided. Default
+is \code{NULL}.}
+
+\item{raw_file_extension}{A string with the format of the files (i.e.,
+\code{csv} or \code{txt}) to be merged. \code{raw_file_extension} must be
+provided. Default is \code{NULL}.}
+
+\item{file_name}{A string with the name of the file of the merged table the
+function creates in case \code{save_table} is \code{TRUE}. Extension of the
+the file can be txt or csv and should be included. Default is
 \code{"dataset.txt"}.}
 
-\item{save_table}{Logical. If TRUE, saves the dataset into a txt file.
-Default is \code{"dataset.txt"}.}
+\item{save_table}{Logical. If \code{TRUE}, saves the merged table. Default is
+\code{TRUE}.}
 
-\item{notification}{Logical. If TRUE, prints messages about the progress of
-the function. Default is \code{TRUE}.}
+\item{dir_save_table}{A string with the path of the folder in which the
+merged table is saved in case \code{save_table} is \code{TRUE}. Default is the
+path provided in \code{folder_path}.}
+
+\item{notification}{Logical. If \code{TRUE}, prints messages about the
+progress of the function. Default is \code{TRUE}.}
 }
 \value{
-The merged dataset \code{dataset}.
+The merged table
 }
 \description{
 Vertically concatenates files containing data tables in a long
   format into a single large dataset. In order for the function to work, all
-  files you wish to merge should be put in one folder containing nothing but
-  these files. In addition, the working directory should be set to that
-  folder and all files should be in the same format (either txt or csv).
-  This function is very useful for concatenating raw data files of
-  individual subjects in an experiment (in which each line corresponds to a
-  single observation in the experiment) to one raw data file that includes
+  files you wish to merge should be in the same format (either txt or csv).
+  This function is very useful for concatenating raw data files
+  of individual subjects in an experiment (in which each line corresponds to
+  a single observation in the experiment) to one raw data file that includes
   all subjects.
 }
 

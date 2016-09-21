@@ -7,6 +7,7 @@
 prep(
    dataset = NULL
    , file_name = NULL
+   , file_path = NULL
    , id = NULL
    , within_vars = c()
    , between_vars = c()
@@ -26,6 +27,7 @@ prep(
    , dm = c()
    , save_results = TRUE
    , results_name = "results.txt"
+   , results_path = NULL
    , save_summary = TRUE
 )
 }
@@ -36,10 +38,13 @@ table after merging the individual data files using
 provided. Default is \code{NULL}.}
 
 \item{file_name}{A string with the name of a txt or csv file (including the
-file extension, e.g. \code{"my_data.txt"}) with the merged
-dataset in case the user already merged the individual data files. Either
-\code{dataset} or \code{file_name} must be provided. Default is
-\code{NULL}.}
+file extension, e.g. \code{"my_data.txt"}) with the merged table in case
+the user already merged the individual data files. Either \code{dataset} or
+\code{file_name} must be provided. Default is \code{NULL}.}
+
+\item{file_path}{A string with the path of the folder in which
+\code{file_name} is located. If \code{file_name} was used, then
+\code{file_path} must be provided. Default is \code{NULL}.}
 
 \item{id}{A string with the name of the column in \code{file_name} or in
 \code{dataset} that contains the variable specifying the case identifier
@@ -48,7 +53,7 @@ dataset in case the user already merged the individual data files. Either
 in this column must be numeric. Argument must be provided. Default is
 \code{NULL}.}
 
-\item{within_vars}{A vector with names of the grouping variables in
+\item{within_vars}{String vector with names of grouping variables in
 \code{file_name} or in \code{dataset} that contain independent variables
 manipulated (or observed) within-ids (i.e., within-subjects, repeated
 measures). Single or multiple values must be specified as a string (e.g.,
@@ -59,37 +64,37 @@ measures by first dividing them to the levels of the first grouping
 variable in \code{witin_vars()}, and then within each of those levels
 \code{prep()} divides the data according to the next variable in
 \code{within_vars()} and so forth. Values in these columns must be
-numeric. Either \code{within_vars} or \code{between_vars} or both
+numeric. Either \code{within_vars} or \code{between_vars} (or both)
 arguments must be provided. Default is \code{c()}.}
 
-\item{between_vars}{A vector with names of the grouping variables in
+\item{between_vars}{String vector with names of grouping variables in
 \code{file_name} or in \code{dataset} that contain independent variables
 manipulated (or observed) between-ids (i.e., between-subjects). Single
 or multiple values must be specified as a string (e.g., \code{c("order")}).
 Order of the names in \code{between_vars()} does not matter. Values in
 this column must be numeric. Either \code{between_vars} or
-\code{within_vars} or both arguments must be provided. Default is
+\code{within_vars} (or both) arguments must be provided. Default is
 \code{c()}.}
 
 \item{dvc}{A string with the name of the column in \code{file_name} or in
 \code{dataset} that contains the dependent variable (e.g., "rt" for
 reaction-time as a dependent variable). Values in this column must be in
-an interval or ratio scale. Either \code{dvc} or \code{dvd} or both
+an interval or ratio scale. Either \code{dvc} or \code{dvd} (or both)
 arguments must be provided. Default is \code{NULL}.}
 
 \item{dvd}{A string with the name of the column in \code{file_name} or in
 \code{dataset} that contains the dependent variable (e.g., \code{"ac"}
 for accuracy as a dependent variable). Values in this column must be
-numeric and discrete (e.g., 0 and 1). Either \code{dvc} or \code{dvd} or
-both arguments must be provided. Default is \code{NULL}.}
+numeric and discrete (e.g., 0 and 1). Either \code{dvc} or \code{dvd} (or
+both) arguments must be provided. Default is \code{NULL}.}
 
-\item{keep_trials}{A string. Allows deleting unnecessary observations and keeping
-necessary observations in \code{file_name} or in \code{dataset} according
-to logical conditions specified as a string. For example, if the dataset
-contains practice trials for each subject, these trials should not be
-included in the aggregation. The user should remove these trials by
+\item{keep_trials}{A string. Allows deleting unnecessary observations and
+keeping necessary observations in \code{file_name} or in \code{dataset}
+according to logical conditions specified as a string. For example, if the
+dataset contains practice trials for each subject, these trials should not
+be included in the aggregation. The user should remove these trials by
 specifying how they were coded in the raw data (i.e., data before
-aggregation). For example, if practice trials are all the ones for which
+aggregation). For example, if practice trials are the ones for which
 the "block" column in the raw data tables equals to zero, the
 \code{keep_trials} argument should be \code{"raw_data$block !== 0"}.
 \code{raw_data} is the internal object in \code{prep()} representing the
@@ -99,7 +104,7 @@ conditions for this argument can relate to different columns in the merged
 table. Note that all further arguments of \code{prep()} will relate to the
 remaining observations in the merged table. Default is \code{NULL}.}
 
-\item{drop_vars}{A vector with names of columns to delete in \code{file_name}
+\item{drop_vars}{String vector with names of columns to delete in \code{file_name}
 or in \code{dataset}. Single or multiple values must be specified as a
 string (e.g., \code{c("font_size")}). Order of the names in
 \code{drop_vars} does not matter. Note that all further arguments of
@@ -120,28 +125,28 @@ Defalut is \code{NULL}.}
 and keeping necessary observations in \code{file_name} or in \code{dataset}
 for calculations and aggregation of the dependent variable in \code{dvd}
 according to logical conditions specified as a string. Logical conditions
-should be specified as a string as in the \code{keep_trials argument}
+should be specified as a string as in the \code{keep_trials} argument
 (e.g., \code{raw_data$rt > 100 & raw_data$rt < 3000}). All dependent
 measures for \code{dvd} (i.e., \code{"mdvd"} and \code{"merr"}) will be
 calculated on the remaining observations. Default is \code{NULL}.}
 
-\item{id_properties}{A vector with names of columns in \code{dataset} or in
+\item{id_properties}{String vector with names of columns in \code{dataset} or in
 \code{file_name} that describe the ids (e.g., subjects) in the data and
-are not manipulated (or observed) within-or between-ids. For example, in
-case the user logged for each observation and for each id in an experiment
-also the age and the gender of the subject, this argument will be
+were not manipulated within-or between-ids. For example, in case the user
+logged for each observation and for each id in an experiment also the age
+and the gender of the subject, this argument will be
 \code{c("age", "gender")}. Order of the names in \code{id_properties} does
 not matter. Single or multiple values must be specified as a string.
 Values in these columns must be numeric. Default is \code{c()}.}
 
-\item{sd_criterion}{A vector specifying a number of standard deviation
+\item{sd_criterion}{Numeric vector specifying a number of standard deviation
 criteria for which \code{prep()} will calculate the mean \code{dvc} for
 each cell in the finalized table after rejecting observations that did not
-meet the criterion (e.g., rejecting all observations that were more than 2
+meet the criterion (e.g., rejecting observations that were more than 2
 standard deviations above or below the mean of that cell). Values in this
 vector must be numeric. Default is \code{c(1, 1.5, 2)}.}
 
-\item{percentiles}{A vector containing wanted percentiles for \code{dvc}.
+\item{percentiles}{Numeric vector containing wanted percentiles for \code{dvc}.
 Values in this vector must be decimal numbers between 0 to 1. Percentiles
 are calculated according to \code{type = 7} (see
 \code{\link[stats]{quantile}} for more information). Default is
@@ -161,36 +166,56 @@ observations and keeping necessary observations in \code{file_name} or in
 \code{dataset} for calculations and aggregation of the outlier removal
 procedures by Van Selst & Jolicoeur (1994). Logical conditions should be
 specified as a string as in the \code{keep_trials} argument (e.g.,
-\code{"raw_data$ac == 1"}) \code{outlier_removal} procedure will be
+\code{"raw_data$ac == 1"}). \code{outlier_removal} procedure will be
 calculated on the remaining observations. Defalut is \code{NULL}.}
 
 \item{decimal_places}{Numeric. Specifies number of decimals to be written
 in \code{results_name} for each value of the dependent measures for
 \code{dvc}. Value must be numeric. Default is \code{4}.}
 
-\item{notification}{Logical. If TRUE, prints messages about the progress of
-the function. Default is \code{TRUE}.}
+\item{notification}{Logical. If \code{TRUE}, prints messages about the
+progress of the function. Default is \code{TRUE}.}
 
-\item{dm}{a Vector with names of dependent measures the function returns. If
-empty (i.e., \code{c()}) the function returns a data frame with all
-possible dependent measures in \code{prep()}. Values in this vector must
-be strings from the following list: "mdvc", "sdvc", "meddvc", "tdvc",
+\item{dm}{String vector with names of dependent measures the function
+returns. If empty (i.e., \code{c()}) the function returns a data frame with
+all possible dependent measures in \code{prep()}. Values in this vector
+must be strings from the following list: "mdvc", "sdvc", "meddvc", "tdvc",
 "ntr", "ndvc", "ptr", "prt", "rminv", "mdvd", "merr". Default is
-\code{c()}. See return for more details.}
+\code{c()}. See Value section below for more details.}
 
 \item{save_results}{Logical. If TRUE, the function creates a txt file
 containing the returned data frame. Default is \code{TRUE}.}
 
-\item{results_name}{A string of the name of the data frame the function
-returns in case \code{save_results} is TRUE. Default is
-\code{"results.txt"}.}
+\item{results_name}{A string with the name of the file \code{prep}
+returns in case \code{save_results} is \code{TRUE}. Extension of the file
+can be txt or csv and should be included. Default is \code{"results.txt"}.}
 
-\item{save_summary}{Logical. if TRUE, creates a summary txt file. Default is
-\code{TRUE}.}
+\item{results_path}{A string with the path of the folder in which
+\code{results_name} will be saved. Default is the path provided in
+\code{file_path}. In case no path was provided in \code{file_path},
+\code{results_path} must be provided.}
+
+\item{save_summary}{Logical. if \code{TRUE}, creates a summary file in the
+same format as \code{results_name}. Default is \code{TRUE}.}
 }
 \value{
 A data frame with dependent measures for the dependent variables in
-  \code{dvc} and \code{dvd} by \code{id} and grouping variables:
+  \code{dvc} and \code{dvd} by \code{id} and grouping variables.
+
+  The first column in the finalized table is the \code{id} column.
+  In case \code{id_properties} was used, the next columns will be the
+  value of each \code{id_properties} for each \code{id}.
+
+  If \code{between_vars} was used then the next column\{\}s will be the value
+  of each \code{beween_vars} for each \code{id}.
+
+  The next columns of the finalized table contain the dependent measures
+  according to the design specified. If \code{within_vars} was used, then the
+  data for each dependent measure was first divided according to the levels
+  of the first grouping variable in \code{witin_vars()}, and then within each
+  of those levels \code{prep()} divided the data according to the next
+  variable in \code{within_vars()} and so forth.
+  The dependent measures in the finalized table are:
 
      \code{mdvc}: mean \code{dvc}.
 
@@ -262,7 +287,7 @@ A data frame with dependent measures for the dependent variables in
   aggregated cell (i.e., experimental cell) according to the  provided
   grouping variables (i.e., independent variables). Dependent measures for
   each experimental cell include among others means before and after
-  rejecting all observations according to a flexible standard deviation
+  rejecting observations according to a flexible standard deviation
   criteria, number of rejected observations according to the flexible
   standard deviation criteria, proportions of rejected observations
   according to the flexible standard deviation criteria, number of
@@ -271,35 +296,37 @@ A data frame with dependent measures for the dependent variables in
   suitable when measuring reaction-times), standard deviations, medians,
   means according to any percentile (e.g., 0.05, 0.25, 0.75, 0.95) and
   harmonic means. The data frame \code{prep()} returns can also be exported
-  as a txt file to be used for statistical analysis in other statistical
-  programs.
+  as a txt or csv file to be used for statistical analysis in other
+  statistical programs.
 }
 \examples{
 data(stroopdata)
-finalized_data <- prep(
-         dataset = stroopdata
-         , file_name = NULL
-         , id = "subject"
-         , within_vars = c("block", "target_type")
-         , between_vars = c("order")
-         , dvc = "rt"
-         , dvd = "ac"
-         , keep_trials = NULL
-         , drop_vars = c()
-         , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"
-         , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"
-         , id_properties = c()
-         , sd_criterion = c(1, 1.5, 2)
-         , percentiles = c(0.05, 0.25, 0.75, 0.95)
-         , outlier_removal = 2
-         , keep_trials_outlier = "raw_data$ac == 1"
-         , decimal_places = 0
-         , notification = TRUE
-         , dm = c()
-         , save_results = TRUE
-         , results_name = "results.txt"
-         , save_summary = TRUE
-      )
+finalized_stroopdata <- prep(
+           dataset = stroopdata
+           , file_name = NULL
+           , file_path = NULL
+           , id = "subject"
+           , within_vars = c("block", "target_type")
+           , between_vars = c("order")
+           , dvc = "rt"
+           , dvd = "ac"
+           , keep_trials = NULL
+           , drop_vars = c()
+           , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"
+           , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"
+           , id_properties = c()
+           , sd_criterion = c(1, 1.5, 2)
+           , percentiles = c(0.05, 0.25, 0.75, 0.95)
+           , outlier_removal = 2
+           , keep_trials_outlier = "raw_data$ac == 1"
+           , decimal_places = 0
+           , notification = TRUE
+           , dm = c()
+           , save_results = FALSE
+           , results_name = "results.txt"
+           , results_path = NULL
+           , save_summary = FALSE
+         )
 
 }
 \references{

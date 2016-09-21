@@ -5,13 +5,17 @@
 \title{Reads a File in a txt or csv Format that Contains a Table and Creates a Data
 Frame from it}
 \usage{
-read_data(file_name, notification = TRUE)
+read_data(file_name, file_path = NULL, notification = TRUE)
 }
 \arguments{
-\item{file_name}{A string with the name of the file to be read into R.}
+\item{file_name}{A string with the name of the file to be read into R. The
+string should include the file extension.}
 
-\item{notification}{Logical. If TRUE, prints messages about the progress of
-the function. Default is \code{TRUE}.}
+\item{file_path}{A string with the path to the folder in which the file to
+read is located. Default is \code{NULL}.}
+
+\item{notification}{Logical. If \code{TRUE}, prints messages about the
+progress of the function. Default is \code{TRUE}.}
 }
 \value{
 A data frame of the table specified in \code{file_name}.
