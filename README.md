@@ -84,126 +84,116 @@ head(stroopdata)
 6    5020     1  24      2     1        12         6           1  498  1
 
 # Perform prep
-finalized_data <- prep(
-      dataset = stroopdata  # Name of the merged raw data table in case you already loaded it into R.
-      , file_name = NULL  # Name of the file that contains the raw data after merging the individual
-                          # raw data files.
-      , id = "subject"  # Name of the column that contains the variable specifying the case identifier.
-      , within_vars = c("block", "target_type")  # Name of column or columns that contain independent
-                                                 # within-subject variables.
-      , between_vars = c("order")  # Name of column or columns that contain independent between-subject
-                                   # variables.
-      , dvc = "rt"  # Name of the column that contains the continuous dependent variable (e.g.,
-                    # reaction-time). 
-      , dvd = "ac"  # Name of the column that contains the discrete dependent variable (e.g., 0
-                    # and 1 for accuracy measures).
-      , keep_trials = NULL
-      , drop_vars = c()
-      , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"  # Keep for
-                                                                                       # dvc only
-                                                                                       # trials that
-                                                                                       # meet these
-                                                                                       # conditions. 
-      , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"  # Keep for dvd only trials that
-                                                                    # meet these conditions.
-      , id_properties = c()
-      , sd_criterion = c(1, 1.5, 2)  # Criterions to reject all observations above standard deviations
-                                     # specified here and then calculate means.
-      , percentiles = c(0.05, 0.25, 0.75, 0.95)  # Percentiles of dvc (any percentile is possible).
-      , outlier_removal = 2  # Perform modified recursive procedure with moving criterion.
-      , keep_trials_outlier = "raw_data$ac == 1"  # Keep for outlier removal procedure only trials
-                                                  # that meet this condition.
-      , decimal_places = 4
-      , notification = TRUE
-      , dm = c()  # See ?prep for more details on this argument.
-      , save_results = TRUE  # Create a txt file containing the finalized table.
-      , results_name = "results.txt"  # Name of the file that contains the finalized table.
-      , save_summary = TRUE  # Save a summary txt file with the important parameters of prep().
-   )
+finalized_stroopdata <- prep(
+           dataset = stroopdata
+           , file_name = NULL
+           , file_path = NULL
+           , id = "subject"
+           , within_vars = c("block", "target_type")
+           , between_vars = c("order")
+           , dvc = "rt"
+           , dvd = "ac"
+           , keep_trials = NULL
+           , drop_vars = c()
+           , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"
+           , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"
+           , id_properties = c()
+           , sd_criterion = c(1, 1.5, 2)
+           , percentiles = c(0.05, 0.25, 0.75, 0.95)
+           , outlier_removal = 2
+           , keep_trials_outlier = "raw_data$ac == 1"
+           , decimal_places = 0
+           , notification = TRUE
+           , dm = c()
+           , save_results = FALSE
+           , results_name = "results.txt"
+           , results_path = NULL
+           , save_summary = FALSE
+         )
    
 # Look at finalized_data:
 # The hierarchical order for within_vars was first "block" (which has two levels- "1" and "2", and then
 # "target_type" (which also has two levels- "1" and "2"). This means that for each of the dependent
 # measures we will get four columns. For example mdvc1 is the mean for "block" 1 and "target_type" 2,
-# mdvc2 is the mean for "block" 2 and "target_type" 1 etc.
-head(finalized_data)
-    subject order    mdvc1     mdvc2     mdvc3     mdvc4    sdvc1    sdvc2    sdvc3
-5013    5013     2 863.1736 1038.4444 1081.0000 1103.1189 328.2833 214.1703 417.1448
-5020    5020     1 706.8741  781.1429  636.8056  712.9437 410.1729 361.9275 304.8082
-5021    5021     2 655.0280  742.0294  558.8611  652.5714 161.7873 170.3273 120.8668
-5022    5022     1 604.4266  725.2941  580.1944  650.1250 107.9061 153.0384 127.7895
-5023    5023     2 747.0979  827.4706  908.6571  962.7183 265.1188 200.0777 347.3918
-5024    5024     1 615.9722  793.1714  667.2778  764.1259 124.6003 156.6617 182.2824
-        sdvc4 meddvc1 meddvc2 meddvc3 meddvc4   t1dvc1    t1dvc2    t1dvc3    t1dvc4
-5013 321.4880   758.5  1036.5  1014.0  1037.0 776.8220 1046.7037 1033.0333 1065.1316
-5020 328.2770   586.0   701.0   540.0   629.5 595.3409  699.3636  566.5000  628.3538
-5021 144.2790   633.0   780.0   540.5   629.5 631.6408  760.3636  535.5172  625.0849
-5022 135.0557   594.0   681.5   565.0   635.0 589.2881  691.9565  573.2903  638.7900
-5023 243.0594   726.0   834.0   821.0   900.5 724.3952  824.6087  857.9655  923.2973
-5024 180.0681   600.0   781.0   629.0   719.0 591.3860  775.7308  618.9677  734.5574
-     t1.5dvc1  t1.5dvc2  t1.5dvc3  t1.5dvc4   t2dvc1    t2dvc2    t2dvc3    t2dvc4
-5013 790.0763 1012.8387 1037.0000 1053.9538 809.4818 1005.5000 1001.1176 1067.4148
-5020 595.3409  699.3636  566.5000  626.4351 595.3409  699.3636  566.5000  631.6818
-5021 629.5040  748.2069  558.3030  619.6953 635.9926  731.6667  564.0882  630.3759
-5022 599.3893  697.6296  569.4706  626.8425 602.2774  725.2941  562.9143  637.9854
-5023 718.3630  851.2143  842.6970  914.1520 709.2174  827.2188  864.4118  933.3881
-5024 584.9612  755.8750  618.9677  744.6397 590.5597  755.8750  634.5882  750.9568
-     n1tr1 n1tr2 n1tr3 n1tr4 n1.5tr1 n1.5tr2 n1.5tr3 n1.5tr4 n2tr1 n2tr2 n2tr3 n2tr4
-5013    26     9     6    29      13       5       4      13     7     2     2     8
-5020    11     2     2    12      11       2       2      11    11     2     2    10
-5021    40    12     7    34      18       5       3      12     8     1     2     7
-5022    25    11     5    44      12       7       2      17     6     0     1     7
-5023    19    11     6    31       8       6       2      17     5     2     1     8
-5024    30     9     5    21      15       3       5       7    10     3     2     4
-     ndvc1 ndvc2 ndvc3 ndvc4  p1tr1  p1tr2  p1tr3  p1tr4 p1.5tr1 p1.5tr2 p1.5tr3
-5013   144    36    36   143 0.1806 0.2500 0.1667 0.2028  0.0903  0.1389  0.1111
-5020   143    35    36   142 0.0769 0.0571 0.0556 0.0845  0.0769  0.0571  0.0556
-5021   143    34    36   140 0.2797 0.3529 0.1944 0.2429  0.1259  0.1471  0.0833
-5022   143    34    36   144 0.1748 0.3235 0.1389 0.3056  0.0839  0.2059  0.0556
-5023   143    34    35   142 0.1329 0.3235 0.1714 0.2183  0.0559  0.1765  0.0571
-5024   144    35    36   143 0.2083 0.2571 0.1389 0.1469  0.1042  0.0857  0.1389
-     p1.5tr4  p2tr1  p2tr2  p2tr3  p2tr4   rminv1   rminv2   rminv3    rminv4
-5013  0.0909 0.0486 0.0556 0.0556 0.0559 777.4543 997.0999 951.4738 1019.3421
-5020  0.0775 0.0769 0.0571 0.0556 0.0704 612.0752 709.9542 575.2651  647.6535
-5021  0.0857 0.0559 0.0294 0.0556 0.0500 617.4345 700.6980 501.4269  626.3859
-5022  0.1181 0.0420 0.0000 0.0278 0.0486 585.7888 693.8455 559.1845  622.7780
-5023  0.1197 0.0350 0.0588 0.0286 0.0563 684.5878 772.5444 822.9681  908.1756
-5024  0.0490 0.0694 0.0857 0.0556 0.0280 595.9175 767.3401 629.8362  732.2745
-     p0.05dvc1 p0.05dvc2 p0.05dvc3 p0.05dvc4 p0.25dvc1 p0.25dvc2 p0.25dvc3 p0.25dvc4
-5013    538.65    744.25    575.00    704.20     666.0    889.75    858.00    910.00
-5020    474.00    532.10    453.50    506.35     515.0    639.00    508.25    575.00
-5021    447.00    485.00    456.75    483.90     552.5    594.75    502.00    549.50
-5022    497.50    506.55    436.75    461.45     548.5    607.75    528.00    563.75
-5023    433.10    482.00    549.40    668.40     641.0    722.25    705.50    793.75
-5024    484.15    594.90    495.75    585.20     536.0    703.50    556.00    658.00
-     p0.75dvc1 p0.75dvc2 p0.75dvc3 p0.75dvc4 p0.95dvc1 p0.95dvc2 p0.95dvc3 p0.95dvc4
-5013    958.00   1150.50   1181.75   1245.00   1462.55   1439.50   1779.75   1648.90
-5020    684.50    764.00    624.75    701.75   1857.10   1198.10   1035.00   1568.25
-5021    735.00    866.50    606.75    699.25    958.70    990.05    743.75    941.20
-5022    650.50    833.75    610.00    734.25    744.80    971.05    706.75    888.25
-5023    820.00    953.00   1027.00   1095.75   1034.80   1139.70   1405.30   1439.15
-5024    659.75    832.50    695.50    837.50    887.20   1120.20   1062.75   1026.80
-      mdvd1  mdvd2 mdvd3  mdvd4  merr1  merr2 merr3  merr4    mrmc1     mrmc2
-5013 1.0000 1.0000     1 0.9931 0.0000 0.0000     0 0.0069 809.4818 1038.4444
-5020 1.0000 0.9722     1 0.9861 0.0000 0.0278     0 0.0139 589.3846  699.3636
-5021 1.0000 0.9444     1 0.9722 0.0000 0.0556     0 0.0278 655.0280  742.0294
-5022 0.9931 0.9444     1 1.0000 0.0069 0.0556     0 0.0000 603.9929  725.2941
-5023 1.0000 0.9444     1 0.9861 0.0000 0.0556     0 0.0139 709.2174  827.4706
-5024 1.0000 0.9722     1 1.0000 0.0000 0.0278     0 0.0000 608.5211  777.3529
-         mrmc3     mrmc4 pmrmc1 pmrmc2  pmrmc3 pmrmc4 nmrmc1 nmrmc2 nmrmc3 nmrmc4
-5013 1001.1176 1057.5985 4.8611 0.0000  5.5556 4.1958      7      0      2      6
-5020  566.5000  626.4351 9.7222 5.7143  5.5556 7.7465     14      2      2     11
-5021  571.6571  641.5036 0.0000 0.0000  2.7778 2.1429      0      0      1      3
-5022  562.9143  650.1250 2.0979 0.0000  2.7778 0.0000      3      0      1      0
-5023  842.6970  955.3121 4.1667 0.0000  8.3333 0.7042      6      0      3      1
-5024  611.3438  751.0071 1.3889 2.8571 11.1111 2.0833      2      1      4      3
-     tmrmc1 tmrmc2 tmrmc3 tmrmc4
-5013    144     36     36    143
-5020    144     35     36    142
-5021    143     34     36    140
-5022    143     34     36    144
-5023    144     34     36    142
-5024    144     35     36    144
+# mdvc2 is the mean for "block" 1 and "target_type" 2 etc.
+> head(finalized_stroopdata)
+     subject order mdvc1 mdvc2 mdvc3 mdvc4 sdvc1 sdvc2 sdvc3 sdvc4 meddvc1
+5013    5013     2   863  1038  1081  1103   328   214   417   321     758
+5020    5020     1   707   781   637   713   410   362   305   328     586
+5021    5021     2   655   742   559   653   162   170   121   144     633
+5022    5022     1   604   725   580   650   108   153   128   135     594
+5023    5023     2   747   827   909   963   265   200   347   243     726
+5024    5024     1   616   793   667   764   125   157   182   180     600
+     meddvc2 meddvc3 meddvc4 t1dvc1 t1dvc2 t1dvc3 t1dvc4 t1.5dvc1 t1.5dvc2
+5013    1036    1014    1037    777   1047   1033   1065      790     1013
+5020     701     540     630    595    699    566    628      595      699
+5021     780     540     630    632    760    536    625      630      748
+5022     682     565     635    589    692    573    639      599      698
+5023     834     821     900    724    825    858    923      718      851
+5024     781     629     719    591    776    619    735      585      756
+     t1.5dvc3 t1.5dvc4 t2dvc1 t2dvc2 t2dvc3 t2dvc4 n1tr1 n1tr2 n1tr3 n1tr4
+5013     1037     1054    809   1006   1001   1067    26     9     6    29
+5020      566      626    595    699    566    632    11     2     2    12
+5021      558      620    636    732    564    630    40    12     7    34
+5022      569      627    602    725    563    638    25    11     5    44
+5023      843      914    709    827    864    933    19    11     6    31
+5024      619      745    591    756    635    751    30     9     5    21
+     n1.5tr1 n1.5tr2 n1.5tr3 n1.5tr4 n2tr1 n2tr2 n2tr3 n2tr4 ndvc1 ndvc2
+5013      13       5       4      13     7     2     2     8   144    36
+5020      11       2       2      11    11     2     2    10   143    35
+5021      18       5       3      12     8     1     2     7   143    34
+5022      12       7       2      17     6     0     1     7   143    34
+5023       8       6       2      17     5     2     1     8   143    34
+5024      15       3       5       7    10     3     2     4   144    35
+     ndvc3 ndvc4 p1tr1 p1tr2 p1tr3 p1tr4 p1.5tr1 p1.5tr2 p1.5tr3 p1.5tr4
+5013    36   143 0.181 0.250 0.167 0.203   0.090   0.139   0.111   0.091
+5020    36   142 0.077 0.057 0.056 0.085   0.077   0.057   0.056   0.077
+5021    36   140 0.280 0.353 0.194 0.243   0.126   0.147   0.083   0.086
+5022    36   144 0.175 0.324 0.139 0.306   0.084   0.206   0.056   0.118
+5023    35   142 0.133 0.324 0.171 0.218   0.056   0.176   0.057   0.120
+5024    36   143 0.208 0.257 0.139 0.147   0.104   0.086   0.139   0.049
+     p2tr1 p2tr2 p2tr3 p2tr4 rminv1 rminv2 rminv3 rminv4 p0.05dvc1 p0.05dvc2
+5013 0.049 0.056 0.056 0.056    777    997    951   1019       539       744
+5020 0.077 0.057 0.056 0.070    612    710    575    648       474       532
+5021 0.056 0.029 0.056 0.050    617    701    501    626       447       485
+5022 0.042 0.000 0.028 0.049    586    694    559    623       498       507
+5023 0.035 0.059 0.029 0.056    685    773    823    908       433       482
+5024 0.069 0.086 0.056 0.028    596    767    630    732       484       595
+     p0.05dvc3 p0.05dvc4 p0.25dvc1 p0.25dvc2 p0.25dvc3 p0.25dvc4 p0.75dvc1
+5013       575       704       666       890       858       910       958
+5020       454       506       515       639       508       575       684
+5021       457       484       552       595       502       550       735
+5022       437       461       548       608       528       564       650
+5023       549       668       641       722       706       794       820
+5024       496       585       536       704       556       658       660
+     p0.75dvc2 p0.75dvc3 p0.75dvc4 p0.95dvc1 p0.95dvc2 p0.95dvc3 p0.95dvc4
+5013      1150      1182      1245      1463      1440      1780      1649
+5020       764       625       702      1857      1198      1035      1568
+5021       866       607       699       959       990       744       941
+5022       834       610       734       745       971       707       888
+5023       953      1027      1096      1035      1140      1405      1439
+5024       832       696       838       887      1120      1063      1027
+     mdvd1 mdvd2 mdvd3 mdvd4 merr1 merr2 merr3 merr4 mrmc1 mrmc2 mrmc3 mrmc4
+5013 1.000 1.000     1 0.993 0.000 0.000     0 0.007   809  1038  1001  1058
+5020 1.000 0.972     1 0.986 0.000 0.028     0 0.014   589   699   566   626
+5021 1.000 0.944     1 0.972 0.000 0.056     0 0.028   655   742   572   642
+5022 0.993 0.944     1 1.000 0.007 0.056     0 0.000   604   725   563   650
+5023 1.000 0.944     1 0.986 0.000 0.056     0 0.014   709   827   843   955
+5024 1.000 0.972     1 1.000 0.000 0.028     0 0.000   609   777   611   751
+     pmrmc1 pmrmc2 pmrmc3 pmrmc4 nmrmc1 nmrmc2 nmrmc3 nmrmc4 tmrmc1 tmrmc2
+5013  4.861  0.000  5.556  4.196      7      0      2      6    144     36
+5020  9.722  5.714  5.556  7.746     14      2      2     11    144     35
+5021  0.000  0.000  2.778  2.143      0      0      1      3    143     34
+5022  2.098  0.000  2.778  0.000      3      0      1      0    143     34
+5023  4.167  0.000  8.333  0.704      6      0      3      1    144     34
+5024  1.389  2.857 11.111  2.083      2      1      4      3    144     35
+     tmrmc3 tmrmc4
+5013     36    143
+5020     36    142
+5021     36    140
+5022     36    144
+5023     36    142
+5024     36    144
 ```
 
 ## References
