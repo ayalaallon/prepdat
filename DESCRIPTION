@@ -1,6 +1,6 @@
 Package: prepdat
 Title: Preparing Experimental Data for Statistical Analysis
-Version: 1.0.7
+Version: 1.0.8
 Authors@R: c(
     person("Ayala S.", "Allon", email = "ayalaallon@gmail.com", role = c("aut", "cre")),
     person("Roy", "Luria", role = "aut"),
@@ -11,7 +11,7 @@ Description: Prepares data for statistical analysis (e.g., analysis of variance
   file_merge() function) raw data files into one merged table and then
   aggregate the merged table (using the prep() function) into a finalized
   table while keeping track and summarizing every step of the preparation.
-  The finalized table contain several possibilities for dependent measures of
+  The finalized table contains several possibilities for dependent measures of
   the dependent variable. Most suitable when measuring variables in an
   interval or ratio scale (e.g., reaction-times) and/or discrete values such
   as accuracy. Main functions included are file_merge() and prep(). The
