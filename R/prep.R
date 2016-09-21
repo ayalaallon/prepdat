@@ -10,7 +10,7 @@
 #'   aggregated cell (i.e., experimental cell) according to the  provided
 #'   grouping variables (i.e., independent variables). Dependent measures for
 #'   each experimental cell include among others means before and after
-#'   rejecting all observations according to a flexible standard deviation
+#'   rejecting observations according to a flexible standard deviation
 #'   criteria, number of rejected observations according to the flexible
 #'   standard deviation criteria, proportions of rejected observations
 #'   according to the flexible standard deviation criteria, number of
@@ -19,12 +19,13 @@
 #'   suitable when measuring reaction-times), standard deviations, medians,
 #'   means according to any percentile (e.g., 0.05, 0.25, 0.75, 0.95) and
 #'   harmonic means. The data frame \code{prep()} returns can also be exported
-#'   as a txt file to be used for statistical analysis in other statistical
-#'   programs.
+#'   as a txt or csv file to be used for statistical analysis in other
+#'   statistical programs.
 #'
 #' @usage prep(
 #'    dataset = NULL
 #'    , file_name = NULL
+#'    , file_path = NULL
 #'    , id = NULL
 #'    , within_vars = c()
 #'    , between_vars = c()
@@ -44,6 +45,7 @@
 #'    , dm = c()
 #'    , save_results = TRUE
 #'    , results_name = "results.txt"
+#'    , results_path = NULL
 #'    , save_summary = TRUE
 #' )
 #' @param dataset Name of the data frame in R that contains the long format
@@ -51,17 +53,19 @@
 #'   \code{file_merge()}. Either \code{dataset} or \code{file_name} must be
 #'   provided. Default is \code{NULL}.
 #' @param file_name A string with the name of a txt or csv file (including the
-#'   file extension, e.g. \code{"my_data.txt"}) with the merged
-#'   dataset in case the user already merged the individual data files. Either
-#'   \code{dataset} or \code{file_name} must be provided. Default is
-#'   \code{NULL}.
+#'   file extension, e.g. \code{"my_data.txt"}) with the merged table in case
+#'   the user already merged the individual data files. Either \code{dataset} or
+#'   \code{file_name} must be provided. Default is \code{NULL}.
+#' @param file_path A string with the path of the folder in which
+#'   \code{file_name} is located. If \code{file_name} was used, then
+#'   \code{file_path} must be provided. Default is \code{NULL}.
 #' @param id A string with the name of the column in \code{file_name} or in
 #'   \code{dataset} that contains the variable specifying the case identifier
 #'   (i.e., the variable upon which the measurement took place; e.g.,
 #'   \code{"subject_number"}). This should be a unique value per case. Values
 #'   in this column must be numeric. Argument must be provided. Default is
 #'   \code{NULL}.
-#' @param within_vars A vector with names of the grouping variables in
+#' @param within_vars String vector with names of grouping variables in
 #'   \code{file_name} or in \code{dataset} that contain independent variables
 #'   manipulated (or observed) within-ids (i.e., within-subjects, repeated
 #'   measures). Single or multiple values must be specified as a string (e.g.,
@@ -72,33 +76,33 @@
 #'   variable in \code{witin_vars()}, and then within each of those levels
 #'   \code{prep()} divides the data according to the next variable in
 #'   \code{within_vars()} and so forth. Values in these columns must be
-#'   numeric. Either \code{within_vars} or \code{between_vars} or both
+#'   numeric. Either \code{within_vars} or \code{between_vars} (or both)
 #'   arguments must be provided. Default is \code{c()}.
-#' @param between_vars A vector with names of the grouping variables in
+#' @param between_vars String vector with names of grouping variables in
 #'   \code{file_name} or in \code{dataset} that contain independent variables
 #'   manipulated (or observed) between-ids (i.e., between-subjects). Single
 #'   or multiple values must be specified as a string (e.g., \code{c("order")}).
 #'   Order of the names in \code{between_vars()} does not matter. Values in
 #'   this column must be numeric. Either \code{between_vars} or
-#'   \code{within_vars} or both arguments must be provided. Default is
+#'   \code{within_vars} (or both) arguments must be provided. Default is
 #'   \code{c()}.
 #' @param dvc A string with the name of the column in \code{file_name} or in
 #'   \code{dataset} that contains the dependent variable (e.g., "rt" for
 #'   reaction-time as a dependent variable). Values in this column must be in
-#'   an interval or ratio scale. Either \code{dvc} or \code{dvd} or both
+#'   an interval or ratio scale. Either \code{dvc} or \code{dvd} (or both)
 #'   arguments must be provided. Default is \code{NULL}.
 #' @param dvd A string with the name of the column in \code{file_name} or in
 #'   \code{dataset} that contains the dependent variable (e.g., \code{"ac"}
 #'   for accuracy as a dependent variable). Values in this column must be
-#'   numeric and discrete (e.g., 0 and 1). Either \code{dvc} or \code{dvd} or
-#'   both arguments must be provided. Default is \code{NULL}.
-#' @param keep_trials A string. Allows deleting unnecessary observations and keeping
-#'   necessary observations in \code{file_name} or in \code{dataset} according
-#'   to logical conditions specified as a string. For example, if the dataset
-#'   contains practice trials for each subject, these trials should not be
-#'   included in the aggregation. The user should remove these trials by
+#'   numeric and discrete (e.g., 0 and 1). Either \code{dvc} or \code{dvd} (or
+#'   both) arguments must be provided. Default is \code{NULL}.
+#' @param keep_trials A string. Allows deleting unnecessary observations and
+#'   keeping necessary observations in \code{file_name} or in \code{dataset}
+#'   according to logical conditions specified as a string. For example, if the
+#'   dataset contains practice trials for each subject, these trials should not
+#'   be included in the aggregation. The user should remove these trials by
 #'   specifying how they were coded in the raw data (i.e., data before
-#'   aggregation). For example, if practice trials are all the ones for which
+#'   aggregation). For example, if practice trials are the ones for which
 #'   the "block" column in the raw data tables equals to zero, the
 #'   \code{keep_trials} argument should be \code{"raw_data$block !== 0"}.
 #'   \code{raw_data} is the internal object in \code{prep()} representing the
@@ -107,7 +111,7 @@
 #'   conditions for this argument can relate to different columns in the merged
 #'   table. Note that all further arguments of \code{prep()} will relate to the
 #'   remaining observations in the merged table. Default is \code{NULL}.
-#' @param drop_vars A vector with names of columns to delete in \code{file_name}
+#' @param drop_vars String vector with names of columns to delete in \code{file_name}
 #'   or in \code{dataset}. Single or multiple values must be specified as a
 #'   string (e.g., \code{c("font_size")}). Order of the names in
 #'   \code{drop_vars} does not matter. Note that all further arguments of
@@ -126,25 +130,25 @@
 #'   and keeping necessary observations in \code{file_name} or in \code{dataset}
 #'   for calculations and aggregation of the dependent variable in \code{dvd}
 #'   according to logical conditions specified as a string. Logical conditions
-#'   should be specified as a string as in the \code{keep_trials argument}
+#'   should be specified as a string as in the \code{keep_trials} argument
 #'   (e.g., \code{raw_data$rt > 100 & raw_data$rt < 3000}). All dependent
 #'   measures for \code{dvd} (i.e., \code{"mdvd"} and \code{"merr"}) will be
 #'   calculated on the remaining observations. Default is \code{NULL}.
-#' @param id_properties A vector with names of columns in \code{dataset} or in
+#' @param id_properties String vector with names of columns in \code{dataset} or in
 #'   \code{file_name} that describe the ids (e.g., subjects) in the data and
-#'   are not manipulated (or observed) within-or between-ids. For example, in
-#'   case the user logged for each observation and for each id in an experiment
-#'   also the age and the gender of the subject, this argument will be
+#'   were not manipulated within-or between-ids. For example, in case the user
+#'   logged for each observation and for each id in an experiment also the age
+#'   and the gender of the subject, this argument will be
 #'   \code{c("age", "gender")}. Order of the names in \code{id_properties} does
 #'   not matter. Single or multiple values must be specified as a string.
 #'   Values in these columns must be numeric. Default is \code{c()}.
-#' @param sd_criterion A vector specifying a number of standard deviation
+#' @param sd_criterion Numeric vector specifying a number of standard deviation
 #'   criteria for which \code{prep()} will calculate the mean \code{dvc} for
 #'   each cell in the finalized table after rejecting observations that did not
-#'   meet the criterion (e.g., rejecting all observations that were more than 2
+#'   meet the criterion (e.g., rejecting observations that were more than 2
 #'   standard deviations above or below the mean of that cell). Values in this
 #'   vector must be numeric. Default is \code{c(1, 1.5, 2)}.
-#' @param percentiles A vector containing wanted percentiles for \code{dvc}.
+#' @param percentiles Numeric vector containing wanted percentiles for \code{dvc}.
 #'   Values in this vector must be decimal numbers between 0 to 1. Percentiles
 #'   are calculated according to \code{type = 7} (see
 #'   \code{\link[stats]{quantile}} for more information). Default is
@@ -167,21 +171,25 @@
 #' @param decimal_places Numeric. Specifies number of decimals to be written
 #'   in \code{results_name} for each value of the dependent measures for
 #'   \code{dvc}. Value must be numeric. Default is \code{4}.
-#' @param notification Logical. If TRUE, prints messages about the progress of
-#'   the function. Default is \code{TRUE}.
-#' @param dm a Vector with names of dependent measures the function returns. If
-#'   empty (i.e., \code{c()}) the function returns a data frame with all
-#'   possible dependent measures in \code{prep()}. Values in this vector must
-#'   be strings from the following list: "mdvc", "sdvc", "meddvc", "tdvc",
+#' @param notification Logical. If \code{TRUE}, prints messages about the
+#'   progress of the function. Default is \code{TRUE}.
+#' @param dm  String vector with names of dependent measures the function
+#'   returns. If empty (i.e., \code{c()}) the function returns a data frame with
+#'   all possible dependent measures in \code{prep()}. Values in this vector
+#'   must be strings from the following list: "mdvc", "sdvc", "meddvc", "tdvc",
 #'   "ntr", "ndvc", "ptr", "prt", "rminv", "mdvd", "merr". Default is
-#'   \code{c()}. See return for more details.
+#'   \code{c()}. See Value section below for more details.
 #' @param save_results Logical. If TRUE, the function creates a txt file
 #'   containing the returned data frame. Default is \code{TRUE}.
-#' @param results_name A string of the name of the data frame the function
-#'   returns in case \code{save_results} is TRUE. Default is
-#'   \code{"results.txt"}.
-#' @param save_summary Logical. if TRUE, creates a summary txt file. Default is
-#'   \code{TRUE}.
+#' @param results_name A string with the name of the file \code{prep}
+#'   returns in case \code{save_results} is \code{TRUE}. Extension of the file
+#'   can be txt or csv and should be included. Default is \code{"results.txt"}.
+#' @param results_path A string with the path of the folder in which
+#'   \code{results_name} will be saved. Default is the path provided in
+#'   \code{file_path}. In case no path was provided in \code{file_path},
+#'   \code{results_path} must be provided.
+#' @param save_summary Logical. if \code{TRUE}, creates a summary file in the
+#'   same format as \code{results_name}. Default is \code{TRUE}.
 #' @references Grange, J.A. (2015). trimr: An implementation of common response
 #'  time trimming methods. R Package Version 1.0.1.
 #'  \url{https://CRAN.R-project.org/package=trimr}
@@ -192,7 +200,22 @@
 #'
 #'
 #' @return A data frame with dependent measures for the dependent variables in
-#'   \code{dvc} and \code{dvd} by \code{id} and grouping variables:
+#'   \code{dvc} and \code{dvd} by \code{id} and grouping variables.
+#'
+#'   The first column in the finalized table is the \code{id} column.
+#'   In case \code{id_properties} was used, the next columns will be the
+#'   value of each \code{id_properties} for each \code{id}.
+#'
+#'   If \code{between_vars} was used then the next column\{\}s will be the value
+#'   of each \code{beween_vars} for each \code{id}.
+#'
+#'   The next columns of the finalized table contain the dependent measures
+#'   according to the design specified. If \code{within_vars} was used, then the
+#'   data for each dependent measure was first divided according to the levels
+#'   of the first grouping variable in \code{witin_vars()}, and then within each
+#'   of those levels \code{prep()} divided the data according to the next
+#'   variable in \code{within_vars()} and so forth.
+#'   The dependent measures in the finalized table are:
 #'
 #'      \code{mdvc}: mean \code{dvc}.
 #'
@@ -255,33 +278,35 @@
 #' @export
 #' @examples
 #' data(stroopdata)
-#' finalized_data <- prep(
-#'          dataset = stroopdata
-#'          , file_name = NULL
-#'          , id = "subject"
-#'          , within_vars = c("block", "target_type")
-#'          , between_vars = c("order")
-#'          , dvc = "rt"
-#'          , dvd = "ac"
-#'          , keep_trials = NULL
-#'          , drop_vars = c()
-#'          , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"
-#'          , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"
-#'          , id_properties = c()
-#'          , sd_criterion = c(1, 1.5, 2)
-#'          , percentiles = c(0.05, 0.25, 0.75, 0.95)
-#'          , outlier_removal = 2
-#'          , keep_trials_outlier = "raw_data$ac == 1"
-#'          , decimal_places = 0
-#'          , notification = TRUE
-#'          , dm = c()
-#'          , save_results = TRUE
-#'          , results_name = "results.txt"
-#'          , save_summary = TRUE
-#'       )
+#' finalized_stroopdata <- prep(
+#'            dataset = stroopdata
+#'            , file_name = NULL
+#'            , file_path = NULL
+#'            , id = "subject"
+#'            , within_vars = c("block", "target_type")
+#'            , between_vars = c("order")
+#'            , dvc = "rt"
+#'            , dvd = "ac"
+#'            , keep_trials = NULL
+#'            , drop_vars = c()
+#'            , keep_trials_dvc = "raw_data$rt > 100 & raw_data$rt < 3000 & raw_data$ac == 1"
+#'            , keep_trials_dvd = "raw_data$rt > 100 & raw_data$rt < 3000"
+#'            , id_properties = c()
+#'            , sd_criterion = c(1, 1.5, 2)
+#'            , percentiles = c(0.05, 0.25, 0.75, 0.95)
+#'            , outlier_removal = 2
+#'            , keep_trials_outlier = "raw_data$ac == 1"
+#'            , decimal_places = 0
+#'            , notification = TRUE
+#'            , dm = c()
+#'            , save_results = FALSE
+#'            , results_name = "results.txt"
+#'            , results_path = NULL
+#'            , save_summary = FALSE
+#'          )
 #'
-prep <- function(dataset = NULL, file_name = NULL, id = NULL,
-                 within_vars =  c(), between_vars = c(), dvc = NULL,
+prep <- function(dataset = NULL, file_name = NULL, file_path = NULL,
+                 id = NULL, within_vars =  c(), between_vars = c(), dvc = NULL,
                  dvd = NULL, keep_trials = NULL, drop_vars = c(),
                  keep_trials_dvc = NULL, keep_trials_dvd = NULL,
                  id_properties = c(), sd_criterion = c(1, 1.5, 2),
@@ -289,32 +314,55 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
                  outlier_removal = NULL, keep_trials_outlier = NULL,
                  decimal_places = 4, notification = TRUE, dm = c(),
                  save_results = TRUE, results_name = "results.txt",
-                 save_summary = TRUE) {
+                 results_path = NULL, save_summary = TRUE) {
+
   ## Error handling
-  # Checks if large dataset was provided
+  # Check if large dataset was provided
   if (is.null(dataset) & is.null(file_name)) {
-    stop("Oops! Did not find dataset or file_name. Either dataset or file_name must be provided")
+    stop("Oops! Did not find dataset or file_name.\nEither dataset or file_name must be provided")
   }
-
-  # Get results_name extension
-  extension <- substr(results_name, nchar(results_name) - 3,
-                      nchar(results_name))
-  # Check if extension is correct
-  if (extension != ".txt") {
-    stop("Oops! results_name must end with txt extension")
+  # Check if dataset or file_name argument was provided
+  if (!is.null(dataset)) {
+    # dataset argumnet was used
+    if (!exists("dataset")) {
+      # dataset does not exists
+      stop("Oops! Object entered in dataset does not exists.\nPlease check argument dataset")
+    }
+  } else if(!is.null(file_name)) {
+    # file_name argument was used
+    # Check if file_path was provided
+    if (is.null(file_path)) {
+      # file_path was not provided
+      stop("Oops! file_name was entered but file_path was not found.\nMust enter file_path")
+    }
   }
-
+  # Check results_name is correct in case save_results is TRUE
+  if (save_results) {
+    # Get results_name extension
+    extension <- substr(results_name, nchar(results_name) - 3,
+                        nchar(results_name))
+    # Check if extension is correct
+    if (!(extension %in% c(".txt", ".csv"))) {
+      stop(paste("Oops!", results_name, "must end with txt or csv extension"))
+    }
+  }
+  # Check if file_name argument is used
+  if (!is.null(file_name)) {
+    # Get file_name extension
+    extension_fn <- substr(file_name, nchar(file_name) - 3, nchar(file_name))
+    # Check if extension_fn is correct
+    if (!(extension_fn %in% c(".txt", ".csv"))) {
+      stop(paste("Oops!", file_name, "must end with txt or csv extenion and be in that format"))
+    }
+  }
   # Check if id was provided
   if (is.null(id)) {
     stop("Oops! id is missing. Please provide name of id column")
   }
-
   # Check if independent variables were provided
   if (length(within_vars) == 0 & length(between_vars) == 0) {
-    stop("Oops! Did not find independent variables. You must enter an independent varible to either within_vars,
-          between_vars (or to both)")
+    stop("Oops! Did not find independent variables.\nYou must enter an independent varible to either within_vars, between_vars (or both)")
   }
-
   # Check if dependent variables were provided
   if (is.null(dvc) & is.null(dvd)) {
     stop("Oops! Did not find dvc or dvd. You must enter at least one dependent variable")
@@ -323,31 +371,165 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   ## Number of decimal places for dvd
   decimal_dvd <- 3
 
-  ## Create name for summary file
-  sum_file_name <- paste(substr(results_name, 0, nchar(results_name) - 4),
-                         "_summary.txt", sep = "")
-
   ## Read table
   if (!is.null(file_name)) {
     # Call read_data()
-    raw_data <- read_data(file_name, notification)
+    raw_data <- read_data(file_name, file_path, notification)
     # For summary txt file (to be used later in the code)
     dataname <- file_name
+    # Check if results_path is NULL
+    if (is.null(results_path)) {
+      # Set results_path to file_path
+      results_path <- file_path
+    }
   } else {
     # Take table from dataset
     raw_data <- dataset
     # For summary txt file (to be used laster in the code)
     dataname <- "dataset"
+    if (save_results) {
+      # Check if results_path is NULL
+      if (is.null(results_path)) {
+        # results_path was not provided
+        stop("Oops! save_results is TRUE but results_path was not provided\nYou must provide results_path in order to save results in a file")
+      }
+    } else if (save_summary & is.null(results_path)) {
+      stop("Oops! save_summary is TRUE but results_path was not provided\nYou must provide results_path in order to save summary file")
+    }
   }
 
-  ## For summary txt file (to be used later in the code)
+  # Create extension for summery file in case it was not created by now
+  if (save_summary) {
+    if (!save_results) {
+      extension <- ".txt"
+    }
+    # Create name for summary file
+    sum_file_name <- paste(substr(results_name, 0, nchar(results_name) - 4),
+                           "_summary", extension, sep = "")
+  }
+
+  ## More error handling. This time after reading the the table
+  # Check if name entered in id exists in raw_data
+  if (!(id %in% names(raw_data))) {
+    # id was not found in raw_data
+    stop(paste("Oops!", id , "was not found in the table. Please check argument id"))
+  } else if (!is.numeric(raw_data[[id]])) {
+    # id was found but is not numeric
+    stop(paste("Oops!", id, "values are not numeric.", id, "values must be numeric"))
+  }
+  # Check if name entered in within_vars exists in raw_data
+  if (length(within_vars) > 0) {
+    # Found within_vars
+    for (w in within_vars) {
+      if (!(w %in% names(raw_data))) {
+        # w was not found in raw_data
+        stop(paste("Oops!", w, "was not found in the table. Please check argument within_vars"))
+      } else if (!is.numeric(raw_data[[w]])) {
+        # w was found but is not numeric
+        stop(paste("Oops!", w, "values are not numeric.", w, "values must be numeric"))
+      }
+    }
+  }
+  # Check if name entered in between_vars exists in raw_data
+  if (length(between_vars) > 0) {
+    # Found between_vars
+    for (b in between_vars) {
+      if (!(b %in% names(raw_data))) {
+        # b was not found in raw_data
+        stop(paste("Oops!", b, "was not found in the table. Please check argument between_vars"))
+      } else if (!is.numeric(raw_data[[b]])) {
+        # b was found but is not numeric
+        stop(paste("Oops!", b, "values are not numeric.", b, "values must be numeric"))
+      }
+    }
+  }
+  # Check if name entered in dvc exists in raw_data
+  if (!is.null(dvc)) {
+    # dvc is not NULL
+    if (!(dvc %in% names(raw_data))) {
+      # dvc was not found in raw_data
+      stop(paste("Oops!", dvc, "was not found in the table. Please check argumment dvc"))
+    } else if (!is.numeric(raw_data[[dvc]])) {
+      # dvc was found but is not numeric
+      stop(paste("Oops!", dvc, "values are not numeric.", dvc, "values must be numeric"))
+    }
+  }
+  # Check if name entered in dvd exists in raw_data
+  if (!is.null(dvd)) {
+    # dvd is not NULL
+    if (!(dvd %in% names(raw_data))) {
+      # dvd was not found in raw_data
+      stop(paste("Oops!", dvd, "was not found in the table. Please check argument dvd"))
+    } else if (!is.numeric(raw_data[[dvd]])) {
+      # dvd was found but is not numeric
+      stop(paste("Oops!", dvd, "values are not numeric.", dvd, "values must be numeric"))
+    }
+  }
+  # Check for spelling mistakes in keep_trials
+  if (!is.null(keep_trials)) {
+    if (length(eval(parse(text = keep_trials))) == 0) {
+      stop("Oops! Possible spelling error in keep_trials\nPlease check keep_trials arguemnt")
+    }
+  }
+  # Check if name entered in drop_vars exists in raw_data
+  if (length(drop_vars) > 0) {
+    # Found drop_vars
+    for (d in drop_vars) {
+      if (!(d %in% names(raw_data))) {
+        # d was not found in raw_data
+        stop(paste("Oops!", d, "was not found in the table. Please check argument drop_vars"))
+      }
+    }
+  }
+  # Check for spelling mistakes in keep_trials_dvc
+  if (!is.null(keep_trials_dvc)) {
+    if (length(eval(parse(text = keep_trials_dvc))) == 0) {
+      stop("Oops! Possible spelling error in keep_trials_dvc.\nPlease check argument keep_trials_dvc")
+    }
+  }
+  #Check for spelling mistakes in keep_trials_dvd
+  if (!is.null(keep_trials_dvd)) {
+    if(length(eval(parse(text = keep_trials_dvd))) == 0) {
+      stop("Oops! Possible spelling error in keep_trials_dvd.\nPlease check argument keep_trials_dvd")
+    }
+  }
+  # Check if name entered in id_properties exists in raw_data
+  if (length(id_properties) > 0) {
+    for (p in id_properties) {
+      if (!(p %in% names(raw_data))) {
+        # p was not found in raw_data
+        stop(paste("Oops!", p, "was not found in the table. Please check argument id_properties"))
+      } else if (!is.numeric(raw_data[[p]])) {
+        # p was found but is not numeric
+        stop(paste("Oops!", p, "values are not numeric.", p, "values must be numeric"))
+      }
+    }
+  }
+  # Check if values in percentiles are between 0 and 1
+  if (min(percentiles) <= 0 | max(percentiles) >= 1) {
+    stop("Oops! Values in percentiles must be decimal numbers between 0 to 1.\nPlease check argument percentiles")
+  }
+  # Check for spelling mistakes in keep_trials_outlier
+  if (!is.null(keep_trials_outlier)) {
+    if (length(eval(parse(text = keep_trials_outlier))) == 0) {
+      stop("Oops! Possible spelling error in keep_trials_outlier.\nPlease check argument keep_trials_outlier")
+    }
+  }
+
+  # Checl if outlier_removal is used
   if (!is.null(outlier_removal)) {
+    # In case outlier_removal is used, check that it is 1, 2, or 3
+    if (!(outlier_removal %in% c(1, 2, 3))) {
+      stop("Oops! In case you want outlier removal proceduer,\noutlier_removal argument must be 1, 2, or 3\nPlease check argument outlier_removal")
+
+    }
+    # For summary txt file (to be used later in the code)
     outlier_name <- c("non-recursive", "modified-recursive", "hybrid-recursive")
     outlier_name <- paste(outlier_name[outlier_removal], "procedure with moving criterion", sep = " ")
   }
 
   ## Print dimensions of the large dataset to console
-  if (notification == TRUE) {
+  if (notification) {
     # Message
     message(paste("raw_data has", dim(raw_data)[1], "observations and", dim(raw_data)[2], "variables"))
     print(head(raw_data))
@@ -359,7 +541,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   ## Delete unnecessary trials in case keep_trials is not NULL
   # All further calculations will be done on the remaining trials
   if (!is.null(keep_trials)) {
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Keeping trials according to keep_trials and deleting unnecessary trials in raw_data")
       message("All further calculations will be done on the remaining trials")
@@ -370,7 +552,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     # Subset trials
     keep_trials <- eval(parse(text = keep_trials))
     raw_data <- raw_data[keep_trials, ]
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message(paste("raw_data has", dim(raw_data)[1], "observations and", dim(raw_data)[2], "variables"))
       print(head(raw_data))
@@ -383,7 +565,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   ## Delete unnecessary variables in case drop_vars is not NULL
   # All further calculations will be done on the remaining variables
   if (length(drop_vars) > 0) {
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Dropping variables in raw_data according to drop_vars")
       message("All further calculations will be done on the remaining variables")
@@ -394,7 +576,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
     # Subset variables by keeping all columns except the ones in drop_vars
     raw_data <- raw_data[, !(colnames(raw_data) %in% drop_vars)]
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message(paste("raw_data has", dim(raw_data)[1], "observations and", dim(raw_data)[2], "variables"))
       print(head(raw_data))
@@ -414,7 +596,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   ## Calculates independent between-subjects variables in case they exists
   if (length(between_vars) > 0) {
     # Found between-subjects variables
-    if(notification == TRUE) {
+    if(notification) {
       # Message
       if (length(between_vars) == 1) {
         message(paste("Found", length(between_vars), "between-subjects independent variable:", between_vars))
@@ -425,7 +607,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     # Creates a data frame for between-subject variables according to the
     # number of ids
     between_vars_df <- data.frame(id_col)
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Calculating between-subjects independent variables")
     }
@@ -437,13 +619,13 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
                                    list(raw_data[[id]]), mean)
       i <- i + 1
     }
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Giving names for between-subjects variables")
     }
     # Give names for between-subjects variables
     colnames(between_vars_df) <- between_vars
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Finished between-subjects independent variables")
     }
@@ -452,13 +634,13 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   ## Calculates id_properties in case they exists
   if (length(id_properties) > 0) {
     # Found id properties
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message(paste("Found", length(id_properties), "id properties"))
     }
     # Creates a data frame for id_properties according to the number of subjects
     id_properties_df <- data.frame(id_col)
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Calculating id_properties")
     }
@@ -470,13 +652,13 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
                                     list(raw_data[[id]]), mean)
       i <- i + 1
     }
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Giving names for id_properties variables")
     }
     # Give names for id properties variables
     colnames(id_properties_df) <- id_properties
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Finished id_properties")
     }
@@ -486,7 +668,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   # exists
   if (length(within_vars) > 0) {
     # Creates within_col: a data frame for within_vars variables
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message(paste("Found", length(within_vars), "within-subject independent variables"))
     }
@@ -506,7 +688,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
                                                lex.order = TRUE))
     # Append within_condition to raw_data
     raw_data$within_condition <- factor(within_condition)
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("within_condition column was added to raw_data")
       print(head(raw_data))
@@ -518,16 +700,16 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   # case dvc exists
   if (!is.null(dvc)) {
     # Found dvc data
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Found dvc data")
-      message("Creats a data frame for dvc data")
+      message("Creating data frame named raw_data_dvc for dvc data")
     }
     # Delete unnecessary trials in case keep_trials_dvc is not NULL
     # All further calculations on dvc except outlier removal procedures will
     # be done on the remaining trials
     if (!is.null(keep_trials_dvc)) {
-      if (notification == TRUE) {
+      if (notification) {
         # Message
         message("Keeping trials according to keep_trials_dvc and deleting unnecessary trials in raw_data_dvc")
         message("All further calculations on dvc except outlier removal procedures will be done on the remaining trials")
@@ -545,7 +727,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Save raw_data as raw_data_dvc
       raw_data_dvc <- raw_data
     }
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message(paste("raw_data_dvc has", dim(raw_data_dvc)[1], "observations and", dim(raw_data_dvc)[2], "variables"))
       print(head(raw_data_dvc))
@@ -558,16 +740,16 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   # in case dvd exists
   if (!is.null(dvd)) {
     # Found dvd data
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Found dvd data")
-      message("Creats a data frame for dvd data")
+      message("Creating data frame named raw_data_dvd for dvd data")
     }
     # Delete unnecessary trials in case keep_trials_dvd is not NULL
     # All further calculations on dvd will be done on the remaining trials
     if (!is.null(keep_trials_dvd)) {
       # Delete unnecessary trials
-      if (notification == TRUE) {
+      if (notification) {
         # Message
         message("Keeping trials according to keep_trials_dvd and deleting unnecessary trials in raw_data_dvd")
         message("All further calculations on dvd will be done on the remaining trials")
@@ -586,7 +768,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Save raw_data as raw_data_dvd
       raw_data_dvd <- raw_data
     }
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message(paste("raw_data_dvd has", dim(raw_data_dvd)[1], "observations and", dim(raw_data_dvd)[2], "variables"))
       print(head(raw_data_dvd))
@@ -606,7 +788,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
   # or a mixed design
   if (length(between_vars) > 0 & length(within_vars) == 0) {
     # Between-subjects design: all dependent measures will be calculated by id
-    if (notification == TRUE) {
+    if (notification) {
       message("Your design is a between-subjects design")
     }
 
@@ -618,7 +800,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Checks if the user wants all dpendent measures (i.e., length(dm) == 0)
       # or he wants "mdvc" among others (i.e., "mdvc" %in% dm equals to TRUE)
       if (length(dm) == 0 | "mdvc" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating mean dvc")
         }
@@ -634,7 +816,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Checks if the user wants all dpendent measures (i.e., length(dm) == 0)
       # or he wants "sdvc" among others (i.e., "sdvc" %in% dm equals to TRUE)
       if (length(dm) == 0 | "sdvc" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating SD for dvc using denominator n")
         }
@@ -654,7 +836,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Checks if the user wants all dpendent measures (i.e., length(dm) == 0)
       # or he wants "medrt" among others (i.e., "meddvc" %in% dm equals to TRUE)
       if (length(dm) == 0 | "meddvc" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating median dvc")
         }
@@ -704,7 +886,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         # Calculating mean dvc after rejecting values above SD criterions
         # according to sd_criterion
         while (j <= length(sd_criterion)) {
-          if (notification == TRUE) {
+          if (notification) {
             # Message
             message(paste("Calculating mean dvc after rejecting values above", sd_criterion[j], "SD",
                     sep = " "))
@@ -743,7 +925,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       j <- 1
       # Counting number of rejected values for each sd_criterion
       while (j <= length(sd_criterion)) {
-        if (notification == TRUE) {
+        if (notification) {
         # Messgae
         message(paste("Counting number of rejected values for", sd_criterion[j], "SD", sep = " "))
         }
@@ -774,7 +956,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # measures (i.e., length(dm) == 0) or he wants "ndvc" among others
       # (i.e., "ndvc" %in% dm equals to TRUE)
       if (length(dm) == 0 | "ndvc" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Counting number of values before rejecting values according to sd_criterion")
         }
@@ -800,7 +982,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         # Reset j to 1 for next while loop
         j <- 1
         while (j <= length(sd_criterion)) {
-          if (notification == TRUE) {
+          if (notification) {
             # Message
             message(paste("Calculating proportion of values rejected for", sd_criterion[j], "SD", sep = " "))
           }
@@ -824,7 +1006,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Checks if the user wants all dpendent measures (i.e., length(dm) == 0)
       # or he wants "rminv" among others (i.e., "rminv" %in% dm equals to TRUE)
       if (length(dm) == 0 | "rminv" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating harmonic mean for dvc")
         }
@@ -854,7 +1036,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         j <- 1
         # Calculating percentiles
         while (j <= length(percentiles)) {
-          if (notification == TRUE) {
+          if (notification) {
             # Message
             message(paste("Calculating the", percentiles[j], "percentail for dvc" ), sep = "")
           }
@@ -881,7 +1063,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
           # later use when writing Summary file
           keep_trials_outlier_sum <- keep_trials_outlier
           # Delete unnecessary trials
-          if (notification == TRUE) {
+          if (notification) {
             # Message
             message("Keeping trials according to keep_trials_outlier and deleting unnecessary trials in raw_data")
             message("Outlier removal procedure will be calculated on the remaining trials")
@@ -898,7 +1080,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
           raw_data <- raw_data
         }
 
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating mean dvc by id according to selected outlier removal procedure")
         }
@@ -981,14 +1163,14 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
             totaltrials_data[i, 1] <- current_id[3]  # Should be 3. Do not change
           }
         }
-        # End of id for loop
+        # End of for (i in 1:length(id_col)) loop
 
         # Round final_data according to decimal_places
         final_data <- round(final_data, digits = decimal_places)
         # Round percent_data according to digits = 3
         percent_data <- round(percent_data, digits = 3)
 
-        if (notification == TRUE) {
+        if (notification) {
           # Messgae
           if (outlier_removal == 1) {
             message("Finished calculating means for dvc by id according to non-recursive procedure with moving criterion ")
@@ -1002,7 +1184,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # End of outlier removal
 
       # Finished dvc
-      if (notification == TRUE) {
+      if (notification) {
         # Message
         message("Finished calculating dependent measures for dvc")
       }
@@ -1018,7 +1200,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Checks if the user wants all dpendent measures (i.e., length(dm) == 0)
       # or he wants "mdvd" among others (i.e., "mdvd" %in% dm equals to TRUE)
       if (length(dm) == 0 | "mdvd" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating mean dvd")
         }
@@ -1033,7 +1215,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Checks if the user wants all dpendent measures (i.e., length(dm) == 0)
       # or he wants "merr" among others (i.e., "merr" %in% dm equals to TRUE)
       if (length(dm) == 0 | "merr" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
          # Message
          message("Calculating mean error")
         }
@@ -1041,15 +1223,15 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         colnames(dm_df)[count] <- "merr"
         # Round merr according to decimal_dvd
         dm_df[count] <- round(dm_df[count], digits = decimal_dvd)
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Finished calculating dependent measures for dvd")
         }
       }
     } # End of !is.null(dvd)
 
-    # Creates results file
-    if (notification == TRUE) {
+    ## Creates results file
+    if (notification) {
       # Message
       message("Creating results")
     }
@@ -1073,99 +1255,104 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
     # Change back name of id to original
     names(results)[names(results) == "id_col"] <- id
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Printing head results to console")
       print(head(results))
     }
 
     ## Summary file
-    if (save_summary == TRUE) {
+    if (save_summary) {
       # Write a summary txt file
-      if (notification == TRUE) {
+      if (notification) {
         # Message
         message("Creating summary file")
       }
       # Dim of raw_data, raw_data_dvc and raw_data_dvd
-      cat("====================================================================", "\n", file = sum_file_name)
-      cat(paste("Summary:", dataname), date(), file = sum_file_name, sep = "\n", append = TRUE)
-      cat("====================================================================", "\n", file = sum_file_name, append = TRUE)
+      cat("====================================================================", "\n", file = paste(results_path, "/", sum_file_name, sep = ""))
+      cat(paste("Summary:", dataname), date(), file = paste(results_path, "/", sum_file_name, sep = ""), sep = "\n", append = TRUE)
+      cat("====================================================================", "\n", file = paste(results_path, "/", paste(results_path, "/", sum_file_name, sep = "")), append = TRUE)
       cat(paste(dataname, "has", dim_raw_data1[1], "observations and", dim_raw_data1[2], "variables"),
-          "\n", file = sum_file_name, append = TRUE)
+          "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       if (!is.null(keep_trials) | length(drop_vars) > 0) {
-        cat(paste("* keep_trials:", keep_trials_sum, "drop_vars:", drop_col_sum), "\n", file = sum_file_name, append = TRUE)
+        cat(paste("* keep_trials:", keep_trials_sum, "drop_vars:", drop_col_sum), "\n", file = paste(results_path, "/", paste(results_path, "/", sum_file_name, sep = "")), append = TRUE)
         cat(paste("* After deleting unnecessary trials and variables according to keep_trials and drop_vars", dataname, "has", dim_raw_data2[1],
-                  "observations and", dim_raw_data2[2], "variables"), "\n", file = sum_file_name, append = TRUE)
+                  "observations and", dim_raw_data2[2], "variables"), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
 
       }
       if (!is.null(dvc)) {
-        cat(paste("* keep_trials_dvc:", keep_trials_dvc_sum), "\n", file = sum_file_name, append = TRUE)
+        cat(paste("* keep_trials_dvc:", keep_trials_dvc_sum), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         cat(paste("* After deleting unnecessary trials according to keep_trials_dvc", dvc, "data has", dim_raw_data_dvc[1], "observations and",
-                  dim_raw_data_dvc[2], "variables"), "\n", file = sum_file_name, append = TRUE)
+                  dim_raw_data_dvc[2], "variables"), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         if(!is.null(outlier_removal)) {
-          cat(paste("* keep_trials_outlier:", keep_trials_outlier_sum), "\n", file = sum_file_name, append = TRUE)
+          cat(paste("* keep_trials_outlier:", keep_trials_outlier_sum), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
           cat(paste("* After deleting unnecessary trials and variables according to keep_trials_outlier", dvc, "data for outlier removal procedures has",
-                    dim(raw_data)[1], "observations and", dim(raw_data)[2], "variables"), "\n", file = sum_file_name, append = TRUE)
+                    dim(raw_data)[1], "observations and", dim(raw_data)[2], "variables"), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
           cat(paste("*", outlier_name, "was calculated on", dim(raw_data)[1], "observations and", dim(raw_data)[2], "variables"), "\n",
-              file = sum_file_name, append = TRUE)
+              file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         }
       } else {
-        cat("* No dvc was found", "\n", file = sum_file_name, append = TRUE)
+        cat("* No dvc was found", "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
       if(!is.null(dvd)) {
-        cat(paste("* keep_trials_dvd:", keep_trials_dvd_sum), "\n", file = sum_file_name, append = TRUE)
+        cat(paste("* keep_trials_dvd:", keep_trials_dvd_sum), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         cat(paste("* After deleting unnecessary trials", dvd, "data has", dim_raw_data_dvd[1],
-                        "observations and", dim_raw_data_dvd[2], "variables"), "\n", file = sum_file_name, append = TRUE)
+                        "observations and", dim_raw_data_dvd[2], "variables"), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       } else {
-        cat("* No dvd was found", "\n", file = sum_file_name, append = TRUE)
+        cat("* No dvd was found", "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
       # Dim of results_name
       cat(paste("*", results_name, "has", dim(results)[1], "ids and", dim(results)[2], "variables"), "\n",
-          file = sum_file_name, append = TRUE)
+          file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       # Write ids
-      cat("* ids:", levels(factor(results[[id]])), "\n", file = sum_file_name, append = TRUE)
+      cat("* ids:", levels(factor(results[[id]])), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       # Write levels of between-subjects indpendent variables
       if (length(between_vars) > 0) {
-        cat("* Between-subject independent variables:", "\n",file = sum_file_name, append = TRUE)
+        cat("* Between-subject independent variables:", "\n",file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         for (lev in 1:length(between_vars)) {
-          cat(paste("  ", between_vars[[lev]], ": ", sep = ""), file = sum_file_name, append = TRUE)
-          cat(levels(factor(raw_data[[between_vars[[lev]]]])), "\n", file = sum_file_name, append = TRUE)
+          cat(paste("  ", between_vars[[lev]], ": ", sep = ""), file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
+          cat(levels(factor(raw_data[[between_vars[[lev]]]])), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         }
       } else {
-        cat("* No between-subjects variables were found", "\n",file = sum_file_name, append = TRUE)
+        cat("* No between-subjects variables were found", "\n",file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
       if (length(id_properties) > 0) {
         # Write names of id_properties
-        cat("* id properties:", id_properties, "\n", file = sum_file_name, append = TRUE)
+        cat("* id properties:", id_properties, "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       } else {
-        cat("* No id properties were found", "\n", file = sum_file_name, append = TRUE)
+        cat("* No id properties were found", "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
       if (length(within_vars) == 0) {
         # Write to Summary file
-        cat("* No within-subjects variables were found", "\n",file = sum_file_name, append = TRUE)
+        cat("* No within-subjects variables were found", "\n",file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
-      if (notification == TRUE) {
+      if (notification) {
         message("Summary file finished")
       }
     }
 
     # Save results
-    if (save_results == TRUE) {
-      write.table(results, row.names = FALSE, file = results_name)
-    }
-    # Message
-    if (save_results == TRUE) {
+    if (save_results) {
+      if (extension == ".txt") {
+        # Save results as a txt file
+        write.table(results, row.names = FALSE, file = paste(results_path, "/", results_name, sep = ""))
+      } else {
+        # Save results as a csv file
+        write.csv(results, row.names = FALSE, file = paste(results_path, "/", results_name, sep = ""))
+      }
+      # Message
       message(paste(results_name, "has", dim(results)[1], "observations and", dim(results)[2], "variables"))
     }
     message("prep() returned a data frame to console")
-    message("Hip Hip Hooray! prep() finished. Have a great day and may all your results be significant!")
+    message("Hip Hip Hooray! prep() finished")
+    message("Have a great day and may all your results be significant!")
 
     # Return
     return(results)
 
   # Checks if there are within-subject independent variables
   } else if (length(within_vars) > 0) {
-    if (notification == TRUE) {
+    if (notification) {
       if (length(between_vars) > 0) {
         # Message
         message("Your design is a mixed design (i.e., includes both between-subjects and within-subjects independent variables")
@@ -1190,7 +1377,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
       # mdvc: mean dvc
       if (length(dm) == 0 | "mdvc" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating mean dvc by id by within_condition")
         }
@@ -1206,7 +1393,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
       # sdvc: SD according to denominator n - 1
       if (length(dm) == 0 | "sdvc" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating SD for dvc by id by within_condition using denominator n")
         }
@@ -1229,7 +1416,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
       # meddvc: median dvc
       if (length(dm) == 0 | "meddvc" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating median dvc by id by within_condition")
         }
@@ -1272,7 +1459,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         # Calculating mean dvc by id by within_condition after rejecting values
         # above SD specified in sd_criterions according to sd_criterion
         while (j <= length(sd_criterion)) {
-          if (notification == TRUE) {
+          if (notification) {
             # Message
             message(paste("Calculating mean dvc by id by within_condition after rejecting values above", sd_criterion[j], "SD", sep = " "))
           }
@@ -1311,7 +1498,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # Counting number of rejected values for each sd_criterion
       while (j <= length(sd_criterion)) {
         if(length(dm) == 0 | "ntr" %in% dm) {
-          if (notification == TRUE) {
+          if (notification) {
             # Messgae
             message(paste("Counting number of rejected values for", sd_criterion[j], "SD", sep = " "))
           }
@@ -1337,7 +1524,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
       # ndvc: number of values before removing values according to SD in
       # sd_criterion
-      if (notification == TRUE) {
+      if (notification) {
         # Message
         message("Counting number of values for dvc by id by within_condition before rejecting values according to sd_criterion")
       }
@@ -1367,7 +1554,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         # Reset i to 1
         i <- 1
         while (j <= length(sd_criterion)) {
-          if (notification == TRUE) {
+          if (notification) {
             # Message
             message(paste("Calculating proportion of rejected values for dvc by id by within_condition for", sd_criterion[j], "SD", sep = " "))
           }
@@ -1395,7 +1582,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
       # rminv: harmonic mean
       if (length(dm) == 0 | "rminv" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating harmonic mean for dvc by id by condition")
         }
@@ -1424,7 +1611,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         # Reset j to 1 before next while loop
         j <- 1
         while (j <= length(percentiles)) {
-          if (notification == TRUE) {
+          if (notification) {
             # Message
             message(paste("Calculating the", percentiles[j], "percentail for dvc by id by within_condition" ), sep = "")
           }
@@ -1458,7 +1645,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
         if (!is.null(keep_trials_outlier)) {
           # Delete unnecessary trials
-          if (notification == TRUE) {
+          if (notification) {
             # Message
             message("Keeping trials according to keep_trials_outlier and deleting unnecessary trials in raw_data")
             message("Outlier removal procedure will be calculated on the remaining trials")
@@ -1475,7 +1662,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
           raw_data <- raw_data
         }
 
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating mean dvc by id by within_condition according to selected outlier removal procedure")
         }
@@ -1575,7 +1762,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         # Round percent_data according to digits = 3
         percent_data <- round(percent_data, digits = 3)
 
-        if (notification == TRUE) {
+        if (notification) {
           # Messgae
           if (outlier_removal == 1) {
             message("Finished calculating means for dvc by id by within_condition according to non-recursive procedure with moving criterion ")
@@ -1589,7 +1776,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
       # End of outlier removal procedures
 
       # Finished dvc
-      if (notification == TRUE) {
+      if (notification) {
           # Message
           message("Finished calculating dependent measures for dvc")
       }
@@ -1606,7 +1793,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
       # mdvd: mean dvd
       if (length(dm) == 0 | "mdvd" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating mean dvd by id by within_condition")
         }
@@ -1621,7 +1808,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
 
       # merr: mean error
       if (length(dm) == 0 | "merr" %in% dm) {
-        if (notification == TRUE) {
+        if (notification) {
           # Message
           message("Calculating mean error by id by within_condition")
         }
@@ -1632,7 +1819,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
         # Bind
         temp_dm <- cbind(temp_dm, merr)
       }
-      if (notification == TRUE) {
+      if (notification) {
         # Message
         message("Finished calculating dvd data")
       }
@@ -1642,7 +1829,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     temp_dm <- temp_dm[-1]
 
     ## Creates results file
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Creating results")
     }
@@ -1673,7 +1860,7 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     }
 
     names(results)[names(results) == "id_col"] <- id
-    if (notification == TRUE) {
+    if (notification) {
       # Message
       message("Printing head results")
       print(head(results))
@@ -1682,84 +1869,92 @@ prep <- function(dataset = NULL, file_name = NULL, id = NULL,
     ## Summary
     if (save_summary == TRUE) {
       # Write a summary txt file
-      if (notification == TRUE) {
+      if (notification) {
         # Message
         message("Creating summary file")
       }
       # Dim of raw_data, raw_data_dvc and raw_data_dvd
-      cat("====================================================================", "\n", file = sum_file_name)
-      cat(paste("Summary:", dataname), date(), file = sum_file_name, sep = "\n", append = TRUE)
-      cat("====================================================================", "\n", file = sum_file_name, append = TRUE)
+      cat("====================================================================", "\n", file = paste(results_path, "/", sum_file_name, sep = ""))
+      cat(paste("Summary:", dataname), date(), file = paste(results_path, "/", sum_file_name, sep = ""), sep = "\n", append = TRUE)
+      cat("====================================================================", "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       cat(paste(file_name, "has", dim_raw_data1[1], "observations and", dim_raw_data1[2], "variables"),
-          "\n", file = sum_file_name, append = TRUE)
+          "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       if (!is.null(keep_trials) | length(drop_vars) >0) {
-        cat(paste("* keep_trials:", keep_trials_sum, "drop_vars:", drop_col_sum), "\n", file = sum_file_name, append = TRUE)
+        cat(paste("* keep_trials:", keep_trials_sum, "drop_vars:", drop_col_sum), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         cat(paste("* After deleting unnecessary trials and variables", file_name, "has", dim_raw_data2[1],
-                  "observations and", dim_raw_data2[2], "variables"), "\n", file = sum_file_name, append = TRUE)
+                  "observations and", dim_raw_data2[2], "variables"), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
       if (!is.null(dvc)) {
-        cat(paste("* keep_trials_dvc:", keep_trials_dvc_sum), "\n", file = sum_file_name, append = TRUE)
+        cat(paste("* keep_trials_dvc:", keep_trials_dvc_sum), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         cat(paste("* After deleting unnecessary trials and variables", dvc, "data has", dim_raw_data_dvc[1],
-                        "observations and", dim_raw_data_dvc[2], "variables"), "\n", file = sum_file_name, append = TRUE)
+                        "observations and", dim_raw_data_dvc[2], "variables"), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         if (!is.null(outlier_removal)) {
-          cat(paste("* keep_trials_outlier:", keep_trials_outlier_sum), "\n", file = sum_file_name, append = TRUE)
+          cat(paste("* keep_trials_outlier:", keep_trials_outlier_sum), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
           cat(paste("* After deleting unnecessary trials and variables according to keep_trials_outlier", dvc, "data for outlier removal procedures has",
-                    dim(raw_data)[1], "observations and", dim(raw_data)[2], "variables"), "\n", file = sum_file_name, append = TRUE)
+                    dim(raw_data)[1], "observations and", dim(raw_data)[2], "variables"), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
           cat(paste("*", outlier_name, "was calculated on", dim(raw_data)[1], "observations and", dim(raw_data)[2], "variables"), "\n",
-              file = sum_file_name, append = TRUE)
+              file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         }
       } else {
-        cat("* No dvc was found", "\n", file = sum_file_name, append = TRUE)
+        cat("* No dvc was found", "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
       if(!is.null(dvd)) {
-        cat(paste("* keep_trials_dvd:", keep_trials_dvd_sum), "\n", file = sum_file_name, append = TRUE)
+        cat(paste("* keep_trials_dvd:", keep_trials_dvd_sum), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         cat(paste("* After deleting unnecessary trials and variables", dvd, "data has", dim_raw_data_dvd[1],
-                  "observations and", dim_raw_data_dvd[2], "variables"), "\n", file = sum_file_name, append = TRUE)
+                  "observations and", dim_raw_data_dvd[2], "variables"), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       } else {
-        cat("* No dvd was found", "\n", file = sum_file_name, append = TRUE)
+        cat("* No dvd was found", "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
       # Dim of results_name
       cat(paste("*", results_name, "has", dim(results)[1], "ids and", dim(results)[2], "variables"), "\n",
-          file = sum_file_name, append = TRUE)
+          file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       # Write ids
-      cat( "* ids:", levels(factor(results[[id]])), "\n", file = sum_file_name, append = TRUE)
+      cat( "* ids:", levels(factor(results[[id]])), "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       # Write levels of between-subjects indpendent variables
       if (length(between_vars) > 0) {
-        cat("* Between-subject independent variables:", "\n",file = sum_file_name, append = TRUE)
+        cat("* Between-subject independent variables:", "\n",file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         for (lev in 1:length(between_vars)) {
-          cat(paste("  ", between_vars[[lev]], ": ", sep = ""), file = sum_file_name, append = TRUE)
-          cat(levels(factor(raw_data[[between_vars[[lev]]]])), file = sum_file_name, append = TRUE)
-          cat("\n", file = sum_file_name, append = TRUE)
+          cat(paste("  ", between_vars[[lev]], ": ", sep = ""), file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
+          cat(levels(factor(raw_data[[between_vars[[lev]]]])), file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
+          cat("\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
         }
       } else {
-        cat("* No between-subjects variables were found", "\n",file = sum_file_name, append = TRUE)
+        cat("* No between-subjects variables were found", "\n",file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
       if (length(id_properties) > 0) {
         # Write names of id_properties
-        cat("* id properties:", id_properties, "\n", file = sum_file_name, append = TRUE)
+        cat("* id properties:", id_properties, "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       } else {
-        cat("*", "No id properties were found", "\n", file = sum_file_name, append = TRUE)
+        cat("*", "No id properties were found", "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
-      if (notification == TRUE) {
+      if (notification) {
         message("Summary file finished")
       }
       # Write levels of within-subject indpendent variables
-      cat("* Within-subject independent variables:", "\n", file = sum_file_name, append = TRUE)
+      cat("* Within-subject independent variables:", "\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       for (lev in 1:length(within_vars)) {
-        cat(paste("  ", within_vars[[lev]], ": ", sep = ""), file = sum_file_name, append = TRUE)
-        cat(levels(factor(raw_data[[within_vars[[lev]]]])), file = sum_file_name, append = TRUE)
-        cat("\n", file = sum_file_name, append = TRUE)
+        cat(paste("  ", within_vars[[lev]], ": ", sep = ""), file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
+        cat(levels(factor(raw_data[[within_vars[[lev]]]])), file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
+        cat("\n", file = paste(results_path, "/", sum_file_name, sep = ""), append = TRUE)
       }
-    }
+    }  # End of if(save_summary == TRUE)
 
     # Save results
-    write.table(results, row.names = FALSE, file = results_name)
-    # Message
-    if (save_results == TRUE) {
+    if (save_results) {
+      if (extension == ".txt") {
+        # Write results in txt format
+        write.table(results, row.names = FALSE, file = paste(results_path, "/", results_name, sep = ""))
+      } else {
+        # Write results in a csv format
+        write.csv(results, row.names = FALSE, file = paste(results_path, "/", results_name, sep = ""))
+      }
+      # Message
       message(paste(results_name, "has", dim(results)[1], "observations and", dim(results)[2], "variables"))
     }
+
     message("prep() returned a data frame to console")
-    message("Hip Hip Hooray! prep() finished. Have a great day and may all your results be significant!")
+    message("Hip Hip Hooray! prep() finished")
+    message("Have a great day and may all your results be significant!")
     # Return
     return(results)
   }  # End of if (length(between_vars) > 0 & length(within_vars) == 0)
