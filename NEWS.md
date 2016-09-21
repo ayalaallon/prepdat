@@ -1,3 +1,20 @@
+# prepdat 1.0.8
+- `file_merge()` improved:
+  - Search of files to be merged is now recursive using `folder_path` argument.
+    - Added `raw_file_name` and `raw_file_extension` arguemnts to enable recursive file search.
+  - The function does not change the working directory.
+  - User provides independent paths for location of files to be merged (`folder_path` argument) and the saved merged table (`dir_save_table` argument).
+  - arguments `has_header` and `new_header` added to handle headers.
+  - Informative error messages were added.
+- `prep()` improved:
+  - `file_path` and `results_path` arguemnts added to make file input location and file output location independent.
+  - Informative error messages were added.
+  - file output can be saved also in csv format.
+- Test unit was added using `testthat`
+- `finalized_stroopdata` data frame added:
+  - This is the finalized table `prep()` outputs for the example in `prep()`.
+- Documentation improved.
+
 # prepdat 1.0.7
 - Bugfix: Improved help documents are now available for the users.
   - Description part of the DESCRIPTION file improved.
