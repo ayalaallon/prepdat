@@ -1,15 +1,13 @@
-skip_on_cran()
-
 context("Finalized table")
 
 
 
 test_that("Finialized table is correct", {
-  
+  skip_on_cran()
   library(prepdat)
   data("finalized_stroopdata")
   data("stroopdata")
-  
+
   test_finalized_stroopdata <- prep(
     dataset = stroopdata
     , file_name = NULL
@@ -36,6 +34,6 @@ test_that("Finialized table is correct", {
     , results_path = NULL
     , save_summary = FALSE
   )
-  
+
   expect_equal(test_finalized_stroopdata, finalized_stroopdata)
 })
