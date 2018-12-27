@@ -6,7 +6,7 @@
 
 *prepdat* was created by Ayala S. Allon and [Roy Luria](http://people.socsci.tau.ac.il/mu/royluria/people/). The full papaer about *prepdat* was published in [Journal of Open Research Software](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.134/) on Nov 25, 2016, and can be downloaded [here](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.134/).
 
-For the blog post on R-bloggers about *prepdat* see [here](https://www.r-bloggers.com/prepdat-preparing-experimental-data-for-statistical-analysis/).
+For the blog post on R-bloggers see [here](https://www.r-bloggers.com/prepdat-preparing-experimental-data-for-statistical-analysis/).
 
 ### Ciatation
 If you use *prepdat* in your reserach please cite it as follows:
