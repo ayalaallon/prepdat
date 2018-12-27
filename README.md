@@ -1,5 +1,11 @@
 # Prepdat: Preparing Experimental Data for Statistical Analysis
 
+## Overview
+*prepdat* is an R package that enables the user to merge files containing data tables in a long format into a single large dataset and go form one single large dataset in a long format to one finalized aggregated table ready for statistical analysis. This pacakge is very useful for merging and aggregating raw data files of individual subjects in an experiment (in which each line corresponds to a single observation in the experiment) to one finalized table in which each line corresponds to the averaged performance
+of each subject according to specified dependent and independent variables. *prepdat* also includes several other possibilities
+for the aggregated values such as medians of the dependent variable and trimming procedures for reaction-times according to Van
+Selst & Jolicoeur (1994). 
+
 ## Installation
 A stable release of *prepdat* is now available on CRAN https://cran.r-project.org/package=prepdat.
 To install *prepdat* use:
@@ -16,11 +22,6 @@ install.packages("devtools")
 # install prepdat from GitHub
 devtools::install_github("ayalaallon/prepdat")
 ```
-## Overview
-*prepdat* is an R package that enables the user to merge files containing data tables in a long format into a single large dataset and go form one single large dataset in a long format to one finalized aggregated table ready for statistical analysis. This pacakge is very useful for merging and aggregating raw data files of individual subjects in an experiment (in which each line corresponds to a single observation in the experiment) to one finalized table in which each line corresponds to the averaged performance
-of each subject according to specified dependent and independent variables. *prepdat* also includes several other possibilities
-for the aggregated values such as medians of the dependent variable and trimming procedures for reaction-times according to Van
-Selst & Jolicoeur (1994). 
 
 ## Using prepdat
 The two major functions you need to know in order to use *prepdat* are `file_merge()` and `prep()`.
