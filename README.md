@@ -10,6 +10,7 @@ For the blog post on R-bloggers see [here](https://www.r-bloggers.com/prepdat-pr
 
 ### Ciatation
 If you use *prepdat* in your reserach please cite it as follows:
+
 Allon, A. S., & Luria, R. (2016). prepdat- An R Package for Preparing Experimental Data for Statistical Analysis. *Journal of Open Research Software*, *4*(1), e43. DOI: http://doi.org/10.5334/jors.134. 
 
 ## Additional Overview
