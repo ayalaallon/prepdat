@@ -13,6 +13,9 @@ If you use *prepdat* in your reserach please cite it as follows:
 
 Allon, A. S., & Luria, R. (2016). prepdat- An R Package for Preparing Experimental Data for Statistical Analysis. *Journal of Open Research Software*, *4*(1), e43. DOI: http://doi.org/10.5334/jors.134. 
 
+### Download stats
+[logo](https://github.com/ayalaallon/prepdat/blob/master/Predate_download_stats_12272018.png)
+
 ## Additional Overview
 *prepdat* is an R package that enables the user to merge files containing data tables in a long format into a single large dataset, and go form one single large dataset in a long format to one finalized aggregated table ready for statistical analysis. This pacakge is very useful for merging and aggregating raw data files of individual subjects in an experiment (in which each line corresponds to a single observation in the experiment), resulting in one finalized table in which each line corresponds to the averaged performance of each subject according to specified dependent and independent variables. *prepdat* also includes several other possibilities for the aggregated values such as medians of the dependent variable and trimming procedures for reaction-times according to Van
 Selst & Jolicoeur (1994). 
