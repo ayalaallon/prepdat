@@ -216,6 +216,9 @@ finalized_stroopdata <- prep(
 5024     36    144
 ```
 
+## Acknowledgements
+Nachshon Meiran’s SAS macro code inspired the writing of this package. We would also like to thank James A. Grange for allowing us to use parts of his [*trimr*](https://cran.r-project.org/package=trimr) code for programing the outlier removal procedures.
+
 ## References
 Grange, J.A. (2015). trimr: An implementation of common response time trimming methods. R Package Version 1.0.1. https://cran.r-project.org/package=trimr
 
