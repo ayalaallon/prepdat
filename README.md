@@ -4,7 +4,7 @@
 
 *prepdat* is an R package that helps researchers to optimize and speedup their analysis, providing various cross sections of the data in order to better understand the results.
 
-*prepdat* was created by [Ayala S. Allon](https://www.linkedin.com/in/ayala-s-allon-phd/) and [Roy Luria](http://people.socsci.tau.ac.il/mu/royluria/people/). The full papaer about *prepdat* was published in [Journal of Open Research Software](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.134/) on Nov 25, 2016, and can be downloaded [here](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.134/).
+*prepdat* was written by [Ayala S. Allon](https://www.linkedin.com/in/ayala-s-allon-phd/) (Author, Creator, and Maintainer) and [Roy Luria](http://people.socsci.tau.ac.il/mu/royluria/people/) (Author). The full papaer about *prepdat* was published in [Journal of Open Research Software](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.134/) on Nov 25, 2016, and can be downloaded [here](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.134/).
 
 For the blog post on R-bloggers see [here](https://www.r-bloggers.com/prepdat-preparing-experimental-data-for-statistical-analysis/).
 
