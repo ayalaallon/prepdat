@@ -16,6 +16,8 @@ Allon, A. S., & Luria, R. (2016). prepdat- An R Package for Preparing Experiment
 ## Download Stats
 ![logo](https://github.com/ayalaallon/prepdat/blob/master/prepdat_download_stats_02282019.png)
 
+Plot was updated on Feb 28, 2019.
+
 The data for this plot was taken from [RStudio download logs](http://cran-logs.rstudio.com/) using the [dlstats](https://cran.r-project.org/web/packages/dlstats/vignettes/dlstats.html) package.
 
 ## Contact
