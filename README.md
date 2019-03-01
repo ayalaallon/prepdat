@@ -14,6 +14,8 @@ If you use *prepdat* in your reserach please cite it as follows:
 Allon, A. S., & Luria, R. (2016). prepdat- An R Package for Preparing Experimental Data for Statistical Analysis. *Journal of Open Research Software*, *4*(1), e43. DOI: http://doi.org/10.5334/jors.134. 
 
 ## Download Stats
+[![](https://cranlogs.r-pkg.org/badges/prepdat)](https://cran.r-project.org/package=prepdat)
+
 ![logo](https://github.com/ayalaallon/prepdat/blob/master/prepdat_download_stats_02282019.png)
 
 Plot was updated on Feb 28, 2019.
