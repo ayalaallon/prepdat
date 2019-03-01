@@ -16,10 +16,7 @@ Allon, A. S., & Luria, R. (2016). prepdat- An R Package for Preparing Experiment
 ## Download Stats
 [![](https://cranlogs.r-pkg.org/badges/prepdat)](https://cran.r-project.org/package=prepdat)
 
-Badge was created using https://cranlogs.r-pkg.org/.
-
-
-
+Badge was created using https://cranlogs.r-pkg.org/. \n\n
 
 ![logo](https://github.com/ayalaallon/prepdat/blob/master/prepdat_download_stats_02282019.png)
 
